@@ -7,7 +7,7 @@ import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.UrlHostCheck;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
-public class UrlStackOverflowParser extends UrlIntermediateParser implements UrlHostCheck {
+public class UrlStackOverflowParser extends UrlAbstractParser implements UrlHostCheck {
 
     private final String HOST_NAME = "stackoverflow.com";
 

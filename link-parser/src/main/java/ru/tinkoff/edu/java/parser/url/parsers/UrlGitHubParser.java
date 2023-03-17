@@ -1,14 +1,13 @@
 package ru.tinkoff.edu.java.parser.url.parsers;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Optional;
 
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.UrlHostCheck;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
-public class UrlGitHubParser extends UrlIntermediateParser implements UrlHostCheck {
+public class UrlGitHubParser extends UrlAbstractParser implements UrlHostCheck {
 
     private final String HOST_NAME = "github.com";
 

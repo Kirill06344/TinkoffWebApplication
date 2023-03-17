@@ -6,7 +6,7 @@ import java.util.Set;
 
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
-public class UrlProtocolParser extends UrlIntermediateParser {
+public class UrlProtocolParser extends UrlAbstractParser {
 
     private final Set<String> protocols = Set.of("http", "https");
 

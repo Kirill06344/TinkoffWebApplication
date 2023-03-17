@@ -6,12 +6,12 @@ import java.util.Optional;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
 
-public abstract class UrlIntermediateParser {
+public abstract class UrlAbstractParser {
 
-    private UrlIntermediateParser next;
+    private UrlAbstractParser next;
 
-    public static UrlIntermediateParser link(UrlIntermediateParser first, UrlIntermediateParser... other) {
-        UrlIntermediateParser head = first;
+    public static UrlAbstractParser link(UrlAbstractParser first, UrlAbstractParser... other) {
+        UrlAbstractParser head = first;
         for (var next : other) {
             head.next = next;
             head = next;
