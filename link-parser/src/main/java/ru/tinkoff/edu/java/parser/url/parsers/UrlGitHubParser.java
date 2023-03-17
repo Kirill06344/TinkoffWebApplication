@@ -4,16 +4,15 @@ import java.net.URL;
 import java.util.Optional;
 
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
-import ru.tinkoff.edu.java.parser.url.UrlHostCheck;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
-public class UrlGitHubParser extends UrlAbstractParser implements UrlHostCheck {
+public class UrlGitHubParser extends UrlAbstractParser {
 
     private final String HOST_NAME = "github.com";
 
     @Override
     public Optional<UrlResult> parse(URL url) {
-        if (!check(url, HOST_NAME)) {
+        if (isInvalidHostName(url, HOST_NAME)) {
             return nextOrEmpty(url);
         }
 
