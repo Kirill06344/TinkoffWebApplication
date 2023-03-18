@@ -6,36 +6,32 @@ import java.util.Optional;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
 
-public abstract class UrlAbstractParser {
+public abstract class UrlAbstractParser implements UrlParser {
 
-    private UrlAbstractParser next;
-
-    public static UrlAbstractParser link(UrlAbstractParser first, UrlAbstractParser... other) {
-        UrlAbstractParser head = first;
-        for (var next : other) {
-            head.next = next;
-            head = next;
-        }
-        return first;
-    }
-
+    private UrlParser next;
+    @Override
     public Optional<UrlResult> check(URL url) {
         if (url.getPort() != -1 || (!url.getProtocol().equals("http") && !url.getProtocol().equals("https"))) {
             return Optional.empty();
         }
         return nextOrEmpty(url);
     }
-
-    protected abstract Optional<UrlResult> parse(URL url);
-
-    protected final boolean isInvalidHostName(URL url, String host) {
+    @Override
+    public final boolean isInvalidHostName(URL url, String host) {
         return !url.getHost().equalsIgnoreCase(host);
     }
 
-    protected final Optional<UrlResult> nextOrEmpty(URL url) {
+    @Override
+    public final Optional<UrlResult> nextOrEmpty(URL url) {
         if (next == null) {
             return Optional.empty();
         }
         return next.parse(url);
+    }
+
+    @Override
+    public UrlParser setNext(UrlParser parser) {
+        next = parser;
+        return parser;
     }
 }
