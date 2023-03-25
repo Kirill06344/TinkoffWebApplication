@@ -6,3 +6,10 @@ app:
 springdoc:
   swagger-ui:
     path: /swagger-ui
+
+stackoverflow:
+  site: stackoverflow
+  url: https://api.stackexchange.com/2.3
+
+github:
+  url: https://api.github.com/

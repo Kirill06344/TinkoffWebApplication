@@ -13,17 +13,24 @@ import ru.tinkoff.edu.java.scrapper.clients.StackOverflowClient;
 @Configuration
 public class HttpInterfaceClientConfiguration {
 
+    StackOverflowProperties stackProperties;
+
+    GitHubProperties githubProperties;
+    public HttpInterfaceClientConfiguration(StackOverflowProperties stackProperties, GitHubProperties gitHubProperties) {
+        this.stackProperties= stackProperties;
+        this.githubProperties = gitHubProperties;
+    }
     @Bean("gitHub")
     public WebClient gitHubWebClient() {
         return WebClient.builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl(githubProperties.getUrl())
             .build();
     }
 
     @Bean("stackOverflow")
     public WebClient stackOverflowWebClient() {
         return WebClient.builder()
-            .baseUrl("https://api.stackexchange.com/2.3")
+            .baseUrl(stackProperties.getUrl())
             .build();
     }
 
