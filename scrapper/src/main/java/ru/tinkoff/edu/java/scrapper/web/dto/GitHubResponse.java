@@ -2,5 +2,12 @@ package ru.tinkoff.edu.java.scrapper.web.dto;
 
 import java.time.OffsetDateTime;
 
-public record GitHubResponse(String fullName, OffsetDateTime updatedAt, OffsetDateTime createdAt) {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record GitHubResponse(
+    @JsonProperty("full_name")
+    String fullName,
+    @JsonProperty("updated_at")
+    OffsetDateTime updatedAt
+) {
 }
