@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.web.controllers;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
 import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
 import ru.tinkoff.edu.java.scrapper.web.dto.AddLinkRequest;
+import ru.tinkoff.edu.java.scrapper.web.dto.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.ListLinksResponse;
@@ -41,7 +45,10 @@ public class LinkController {
     @Operation(summary = "Получить все отслеживаемые ссылки",
         responses = {
             @ApiResponse(responseCode = "200", description = "Ссылки успешно получены"),
-            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса")
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE)
+            )
         }
     )
     public ListLinksResponse getAllLinks(@RequestHeader(TG_HEADER) Long tgChatId) {
@@ -52,7 +59,10 @@ public class LinkController {
     @Operation(summary = "Добавить отслеживание ссылки",
         responses = {
             @ApiResponse(responseCode = "200", description = "Ссылка успешно добавлена"),
-            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса")
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE)
+            )
         }
     )
     public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
@@ -64,9 +74,14 @@ public class LinkController {
     @Operation(summary = "Убрать отслеживание ссылки",
         responses = {
             @ApiResponse(responseCode = "200", description = "Ссылка успешно убрана"),
-            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса"),
-            @ApiResponse(responseCode = "404", description = "Ссылка не найдена")
-
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE)
+            ),
+            @ApiResponse(responseCode = "404", description = "Ссылка не найдена",
+                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE)
+            )
         }
     )
     public LinkResponse deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
