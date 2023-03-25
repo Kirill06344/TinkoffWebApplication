@@ -28,9 +28,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/links")
 public class LinkController {
 
-    GitHubService gitHubService;
-
-    StackOverflowService stackOverflowService;
+    private static final String TG_HEADER = "Tg-Chat-Id";
+    private GitHubService gitHubService;
+    private StackOverflowService stackOverflowService;
 
     public LinkController(GitHubService gitHubService, StackOverflowService stackOverflowService) {
         this.gitHubService = gitHubService;
@@ -40,23 +40,36 @@ public class LinkController {
     @GetMapping(consumes = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получить все отслеживаемые ссылки",
         responses = {
-            @ApiResponse(responseCode = "200", description = "Ссылки успешно получены")
+            @ApiResponse(responseCode = "200", description = "Ссылки успешно получены"),
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса")
         }
     )
-    public ListLinksResponse getAllLinks(@RequestHeader("Tg-Chat-Id") Long tgChatId) {
+    public ListLinksResponse getAllLinks(@RequestHeader(TG_HEADER) Long tgChatId) {
         return new ListLinksResponse(null, null);
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    @Operation(summary = "Добавить отслеживание ссылки")
-    public LinkResponse addLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
+    @Operation(summary = "Добавить отслеживание ссылки",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Ссылка успешно добавлена"),
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса")
+        }
+    )
+    public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                 @Valid @RequestBody AddLinkRequest request) {
         return new LinkResponse(null, null);
     }
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    @Operation(summary = "Убрать отслеживание ссылки")
-    public LinkResponse deleteLink(@RequestHeader("Tg-Chat-Id") Long tgChatId,
+    @Operation(summary = "Убрать отслеживание ссылки",
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Ссылка успешно убрана"),
+            @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса"),
+            @ApiResponse(responseCode = "404", description = "Ссылка не найдена")
+
+        }
+    )
+    public LinkResponse deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                    @Valid @RequestBody RemoveLinkRequest request) {
         return new LinkResponse(null, null);
     }
