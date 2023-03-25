@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
 import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
 import ru.tinkoff.edu.java.scrapper.web.dto.AddLinkRequest;
+import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.RemoveLinkRequest;
@@ -59,24 +60,4 @@ public class LinkController {
                                    @Valid @RequestBody RemoveLinkRequest request) {
         return new LinkResponse(null, null);
     }
-
-    /**
-     * Test controller to check GitHubResponse
-     */
-//    @GetMapping("/github")
-//    public GitHubResponse getReposInformation(String owner,String repository) {
-//        System.out.println(owner + " " + repository);
-//        return gitHubService.getRepositoryInfoReactive(owner, repository).block();
-//    }
-
-    /**
-     * Test controller to check StackOverflowResponse
-     */
-    @GetMapping("/stackoverflow/{id}")
-    public StackOverflowResponse getReposInformation(@PathVariable("id") String id) {
-        return stackOverflowService.getQuestionInfoReactive(id).block();
-    }
-
-
-
 }
