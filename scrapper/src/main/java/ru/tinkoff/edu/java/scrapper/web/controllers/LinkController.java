@@ -14,11 +14,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
+import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
 import ru.tinkoff.edu.java.scrapper.web.dto.AddLinkRequest;
-import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.web.dto.RemoveLinkRequest;
+import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -28,8 +29,11 @@ public class LinkController {
 
     GitHubService gitHubService;
 
-    public LinkController(GitHubService gitHubService) {
+    StackOverflowService stackOverflowService;
+
+    public LinkController(GitHubService gitHubService, StackOverflowService stackOverflowService) {
         this.gitHubService = gitHubService;
+        this.stackOverflowService = stackOverflowService;
     }
 
     @GetMapping(consumes = APPLICATION_JSON_VALUE)
@@ -59,10 +63,20 @@ public class LinkController {
     /**
      * Test controller to check GitHubResponse
      */
-    @GetMapping("/github")
-    public GitHubResponse getReposInformation(String owner,String repository) {
-        System.out.println(owner + " " + repository);
-        return gitHubService.getRepositoryInfoReactive(owner, repository).block();
+//    @GetMapping("/github")
+//    public GitHubResponse getReposInformation(String owner,String repository) {
+//        System.out.println(owner + " " + repository);
+//        return gitHubService.getRepositoryInfoReactive(owner, repository).block();
+//    }
+
+    /**
+     * Test controller to check StackOverflowResponse
+     */
+    @GetMapping("/stackoverflow/{id}")
+    public StackOverflowResponse getReposInformation(@PathVariable("id") String id) {
+        return stackOverflowService.getQuestionInfoReactive(id).block();
     }
+
+
 
 }
