@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.configuration;
+package ru.tinkoff.edu.java.scrapper.web.controllers;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.configuration;
+package ru.tinkoff.edu.java.bot.web.controllers;
 
 import java.util.Arrays;
 import java.util.HashMap;
