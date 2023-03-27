@@ -8,8 +8,7 @@ springdoc:
     path: /swagger-ui
 
 stackoverflow:
-  site: stackoverflow
   url: https://api.stackexchange.com/2.3
 
 github:
-  url: https://api.github.com/
+  url: https://api.github.com
