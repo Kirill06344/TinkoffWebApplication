@@ -1,0 +1,48 @@
+package ru.tinkoff.edu.java.scrapper.clients;
+
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.core.publisher.Mono;
+import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
+import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidRepositoryInformation;
+
+public class GitHubClientImpl implements GitHubClient {
+
+    private final WebClient client;
+
+    public GitHubClientImpl(String baseUrl) {
+        client = setUpWebClient(baseUrl);
+    }
+
+    @Override
+    public GitHubResponse fetchRepositoryInfo(String owner, String repos) {
+        return client.get()
+            .uri("/repos/{owner}/{repos}", owner, repos).accept(MediaType.APPLICATION_JSON)
+            .retrieve()
+            .bodyToMono(GitHubResponse.class)
+            .block();
+    }
+
+    private WebClient setUpWebClient(String baseUrl) {
+        ExchangeFilterFunction errorResponseFilter = ExchangeFilterFunction
+            .ofResponseProcessor(this::exchangeFilterResponseProcessor);
+
+        return WebClient.builder()
+            .baseUrl(baseUrl)
+            .filter(errorResponseFilter)
+            .build();
+    }
+
+    private Mono<ClientResponse> exchangeFilterResponseProcessor(ClientResponse response) {
+        HttpStatusCode status = response.statusCode();
+        if (status.is4xxClientError()) {
+            return response.bodyToMono(String.class).flatMap(body -> Mono.error(new InvalidRepositoryInformation(body)));
+        }
+
+        return Mono.just(response);
+    }
+}
