@@ -15,7 +15,7 @@ import ru.tinkoff.edu.java.scrapper.web.dto.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidRepositoryInformation;
 import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidQuestionInformation;
 
-@RestControllerAdvice (
+@RestControllerAdvice(
     basePackages = "ru.tinkoff.edu.java.scrapper.web.controllers"
 )
 public class GlobalExceptionHandler {
