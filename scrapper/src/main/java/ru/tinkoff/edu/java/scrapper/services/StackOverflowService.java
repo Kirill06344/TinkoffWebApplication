@@ -2,24 +2,18 @@ package ru.tinkoff.edu.java.scrapper.services;
 
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Mono;
 import ru.tinkoff.edu.java.scrapper.clients.StackOverflowClient;
-import ru.tinkoff.edu.java.scrapper.configuration.StackOverflowProperties;
-import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
+import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowQuestion;
 
 @Service
 public class StackOverflowService {
+    private final StackOverflowClient client;
 
-    StackOverflowClient stackOverflowClient;
-
-    StackOverflowProperties properties;
-
-    public StackOverflowService(StackOverflowClient stackOverflowClient, StackOverflowProperties properties) {
-        this.stackOverflowClient = stackOverflowClient;
-        this.properties = properties;
+    public StackOverflowService(StackOverflowClient client) {
+        this.client = client;
     }
 
-    public Mono<StackOverflowResponse> getQuestionInfoReactive(String id) {
-        return stackOverflowClient.fetchQuestionInfo(id, properties.getSite());
+    public StackOverflowQuestion getQuestionInfo(String id) {
+        return client.fetchQuestionInfo(id);
     }
 }
