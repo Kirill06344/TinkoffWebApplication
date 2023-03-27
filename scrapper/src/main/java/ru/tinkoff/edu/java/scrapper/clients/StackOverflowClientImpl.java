@@ -9,7 +9,6 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
-import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowQuestion;
 import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidQuestionInformation;
 
@@ -23,18 +22,18 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     }
 
     @Override
-    public StackOverflowQuestion fetchQuestionInfo(String id) {
-        StackOverflowResponse response = client.get()
+    public StackOverflowResponse fetchQuestionInfo(String id) {
+        StackOverflowQuestions response = client.get()
             .uri(uriBuilder -> uriBuilder
                 .path("/questions/{ids}")
                 .queryParam("site", STACKOVERFLOW_SITE)
                 .build(id))
             .accept(MediaType.APPLICATION_JSON)
             .retrieve()
-            .bodyToMono(StackOverflowResponse.class)
+            .bodyToMono(StackOverflowQuestions.class)
             .block();
 
-        return response.questions().isEmpty() ? new StackOverflowQuestion(0, OffsetDateTime.MIN)
+        return response.questions().isEmpty() ? new StackOverflowResponse(0, OffsetDateTime.MIN)
             : response.questions().get(0);
     }
 

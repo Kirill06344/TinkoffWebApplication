@@ -1,11 +1,14 @@
 package ru.tinkoff.edu.java.scrapper.web.dto;
 
-import java.util.List;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record StackOverflowResponse(
-    @JsonProperty("items")
-    List<StackOverflowQuestion> questions
+    @JsonProperty("answer_count")
+    Integer answerCount,
+
+    @JsonProperty("creation_date")
+    OffsetDateTime creationDate
 ) {
 }

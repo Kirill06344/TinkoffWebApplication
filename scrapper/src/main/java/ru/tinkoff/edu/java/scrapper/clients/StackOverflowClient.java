@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.scrapper.clients;
 
-import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowQuestion;
+import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
 
 public interface StackOverflowClient {
-    StackOverflowQuestion fetchQuestionInfo(String id);
+    StackOverflowResponse fetchQuestionInfo(String id);
 }

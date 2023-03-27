@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.services;
 import org.springframework.stereotype.Service;
 
 import ru.tinkoff.edu.java.scrapper.clients.StackOverflowClient;
-import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowQuestion;
+import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
 
 @Service
 public class StackOverflowService {
@@ -13,7 +13,7 @@ public class StackOverflowService {
         this.client = client;
     }
 
-    public StackOverflowQuestion getQuestionInfo(String id) {
+    public StackOverflowResponse getQuestionInfo(String id) {
         return client.fetchQuestionInfo(id);
     }
 }
