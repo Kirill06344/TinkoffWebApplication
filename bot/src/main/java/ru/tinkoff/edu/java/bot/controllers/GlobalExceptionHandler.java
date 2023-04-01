@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.web.controllers;
+package ru.tinkoff.edu.java.bot.controllers;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import ru.tinkoff.edu.java.bot.web.dto.ApiErrorResponse;
+import ru.tinkoff.edu.java.bot.dto.ApiErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
