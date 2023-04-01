@@ -7,8 +7,8 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
-import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
-import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidRepositoryInformation;
+import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
+import ru.tinkoff.edu.java.scrapper.exceptions.InvalidRepositoryInformation;
 
 public class GitHubClientImpl implements GitHubClient {
 

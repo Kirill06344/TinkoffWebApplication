@@ -9,8 +9,9 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
-import ru.tinkoff.edu.java.scrapper.web.dto.StackOverflowResponse;
-import ru.tinkoff.edu.java.scrapper.web.exceptions.InvalidQuestionInformation;
+import ru.tinkoff.edu.java.scrapper.dto.StackOverflowQuestions;
+import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
+import ru.tinkoff.edu.java.scrapper.exceptions.InvalidQuestionInformation;
 
 public class StackOverflowClientImpl implements StackOverflowClient {
 

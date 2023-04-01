@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.web.controllers;
+package ru.tinkoff.edu.java.scrapper.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import ru.tinkoff.edu.java.scrapper.web.dto.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
 
 @RestController
 @RequestMapping(value = "/tg-chat/{id}")

@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.web.controllers;
+package ru.tinkoff.edu.java.scrapper.controllers;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,11 +14,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import ru.tinkoff.edu.java.scrapper.web.dto.AddLinkRequest;
-import ru.tinkoff.edu.java.scrapper.web.dto.ApiErrorResponse;
-import ru.tinkoff.edu.java.scrapper.web.dto.LinkResponse;
-import ru.tinkoff.edu.java.scrapper.web.dto.ListLinksResponse;
-import ru.tinkoff.edu.java.scrapper.web.dto.RemoveLinkRequest;
+import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
+import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.dto.LinkResponse;
+import ru.tinkoff.edu.java.scrapper.dto.ListLinksResponse;
+import ru.tinkoff.edu.java.scrapper.dto.RemoveLinkRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

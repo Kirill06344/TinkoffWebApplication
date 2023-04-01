@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.services;
 import org.springframework.stereotype.Service;
 
 import ru.tinkoff.edu.java.scrapper.clients.GitHubClient;
-import ru.tinkoff.edu.java.scrapper.web.dto.GitHubResponse;
+import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 
 @Service
 public class GitHubService {

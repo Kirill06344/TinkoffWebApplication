@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.web.exceptions;
+package ru.tinkoff.edu.java.scrapper.exceptions;
 
 public class InvalidQuestionInformation extends Exception {
 
