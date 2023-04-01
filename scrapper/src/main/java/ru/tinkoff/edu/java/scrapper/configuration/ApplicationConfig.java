@@ -6,6 +6,10 @@ import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.time.Duration;
+
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test) {}
+public record ApplicationConfig(@NotNull String test, Scheduler scheduler) {
+    public record Scheduler(Duration interval) {}
+}
