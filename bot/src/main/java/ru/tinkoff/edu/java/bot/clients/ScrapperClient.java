@@ -1,7 +1,7 @@
 package ru.tinkoff.edu.java.bot.clients;
 
-public interface ScrapperClient {
 
+public interface ScrapperClient {
 
 
 }

@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.bot.messages;
 import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.commands.*;
@@ -12,22 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class UserMessageProcessorImpl implements UserMessageProcessor {
 
     private final List<? extends Command> commands;
 
-    private MessageSupplier supplier;
-
-    public UserMessageProcessorImpl() {
-        HelpCommand helpCommand = new HelpCommand("/help", "Show all available commands");
-        commands = List.of(
-                new ListCommand("/list", "Show all tracked links"),
-                new TrackCommand("/track", "Start tracking link"),
-                new UntrackCommand("/untrack", "Stop tracking link"),
-                helpCommand
-        );
-        helpCommand.setCommands(commands);
-    }
+    private final MessageSupplier supplier;
 
     @Override
     public List<? extends Command> commands() {
@@ -37,7 +28,7 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
     @Override
     public SendMessage process(Update update) {
         var command = getCommandFromUpdate(update);
-        return command.isEmpty() ? new UnknownCommand().handle(update, supplier) : command.get().handle(update, supplier);
+        return command.isEmpty() ? new UnknownCommand(supplier).handle(update) : command.get().handle(update);
     }
 
     public BotCommand[] botCommands() {
@@ -52,8 +43,4 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
                 .findFirst();
     }
 
-    @Autowired
-    public void setSupplier(MessageSupplier supplier) {
-        this.supplier = supplier;
-    }
 }
