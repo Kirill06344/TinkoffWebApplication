@@ -4,6 +4,7 @@ app:
 bot:
   token: ${telegram.api.token}
 
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
