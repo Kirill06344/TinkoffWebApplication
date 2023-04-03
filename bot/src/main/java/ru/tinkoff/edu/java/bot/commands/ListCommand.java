@@ -28,9 +28,11 @@ public class ListCommand implements Command{
             String path = "empty.mustache";
             if (response.get().size() != 0) {
                 scopes.put("links", response.get().links());
+                scopes.put("size", response.get().size());
                 path = "links.mustache";
             }
             return new SendMessage(getChatId(update), supplier.convertTemplate(path, scopes))
+                    .disableWebPagePreview(true)
                     .parseMode(ParseMode.HTML);
         }
 
