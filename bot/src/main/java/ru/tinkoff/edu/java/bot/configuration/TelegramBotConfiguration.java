@@ -13,7 +13,7 @@ import ru.tinkoff.edu.java.bot.messages.UserMessageProcessorImpl;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class TelegramBotConfig {
+public class TelegramBotConfiguration {
 
     private final TelegramBotProperties properties;
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.commands.*;
+import ru.tinkoff.edu.java.bot.service.ScrapperService;
 import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
 
 @Configuration
@@ -12,13 +13,16 @@ public class CommandConfiguration {
 
     private final MessageSupplier supplier;
 
+    private final ScrapperService service;
+
     @Bean
     ListCommand listCommand() {
-       return ListCommand.builder()
+        return ListCommand.builder()
                 .command("/list")
                 .description("Show all tracked links")
                 .supplier(supplier)
-               .build();
+                .service(service)
+                .build();
     }
 
     @Bean
