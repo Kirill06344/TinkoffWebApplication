@@ -5,14 +5,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.commands.*;
 import ru.tinkoff.edu.java.bot.service.ScrapperService;
-import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+import ru.tinkoff.edu.java.bot.utils.MessageSender;
+import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
 @Configuration
 @RequiredArgsConstructor
 public class CommandConfiguration {
 
-    private final MessageSupplier supplier;
+    private final MessageSender sender;
 
     private final ScrapperService service;
 
@@ -23,7 +24,7 @@ public class CommandConfiguration {
         return ListCommand.builder()
                 .command("/list")
                 .description("Show all tracked links")
-                .supplier(supplier)
+                .sender(sender)
                 .service(service)
                 .build();
     }
@@ -33,7 +34,7 @@ public class CommandConfiguration {
         return HelpCommand.builder()
                 .command("/help")
                 .description("Show all available commands")
-                .supplier(supplier)
+                .sender(sender)
                 .build();
     }
 
@@ -42,7 +43,7 @@ public class CommandConfiguration {
         return TrackCommand.builder()
                 .command("/track")
                 .description("Start tracking link")
-                .supplier(supplier)
+                .sender(sender)
                 .service(service)
                 .validator(validator)
                 .build();
@@ -52,7 +53,9 @@ public class CommandConfiguration {
     UntrackCommand untrackCommand() {
         return UntrackCommand.builder().command("/untrack")
                 .description("Stop tracking link")
-                .supplier(supplier)
+                .sender(sender)
+                .service(service)
+                .validator(validator)
                 .build();
     }
 

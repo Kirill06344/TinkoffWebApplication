@@ -5,7 +5,8 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Builder;
 import ru.tinkoff.edu.java.bot.service.ScrapperService;
-import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+import ru.tinkoff.edu.java.bot.utils.MessageSender;
+import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
 import java.util.Map;
@@ -18,7 +19,7 @@ public class TrackCommand implements Command {
 
     private String description;
 
-    private MessageSupplier supplier;
+    private MessageSender sender;
 
     private ScrapperService service;
 
@@ -29,20 +30,18 @@ public class TrackCommand implements Command {
     public SendMessage handle(Update update) {
         Optional<String> link = validator.getLink(update);
         if (link.isEmpty()) {
-            return new SendMessage(getChatId(update),
-                    supplier.convertTemplate("invalid.mustache", Map.of("command", command)))
-                    .parseMode(ParseMode.HTML);
+            return sender.send(getChatId(update), "invalid.mustache", Map.of());
         }
 
         var response = service.trackLink(getChatId(update), link.get());
+
         if (response.isPresent()) {
-            return new SendMessage(getChatId(update),
-                    supplier.convertTemplate("success_tracking.mustache", Map.of("link", response.get().link()))
-            ).parseMode(ParseMode.HTML);
+            return sender.send(getChatId(update),
+                    "success_tracking.mustache",
+                    Map.of("link", response.get().link()));
         }
 
-        return new SendMessage(getChatId(update), supplier.convertTemplate("defects.mustache", Map.of()))
-                .parseMode(ParseMode.HTML);
+        return sender.send(getChatId(update), "defects.mustache", Map.of());
     }
 
     @Override

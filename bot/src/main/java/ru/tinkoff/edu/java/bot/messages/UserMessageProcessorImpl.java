@@ -4,10 +4,11 @@ import com.pengrad.telegrambot.model.BotCommand;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.commands.*;
-import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+import ru.tinkoff.edu.java.bot.utils.MessageSender;
+import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
 
     private final List<? extends Command> commands;
 
-    private final MessageSupplier supplier;
+    private final MessageSender sender;
 
     @Override
     public List<? extends Command> commands() {
@@ -28,7 +29,7 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
     @Override
     public SendMessage process(Update update) {
         var command = getCommandFromUpdate(update);
-        return command.isEmpty() ? new UnknownCommand(supplier).handle(update) : command.get().handle(update);
+        return command.isEmpty() ? new UnknownCommand(sender).handle(update) : command.get().handle(update);
     }
 
     public BotCommand[] botCommands() {

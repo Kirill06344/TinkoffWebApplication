@@ -5,7 +5,8 @@ import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Builder;
 import ru.tinkoff.edu.java.bot.service.ScrapperService;
-import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+import ru.tinkoff.edu.java.bot.utils.MessageSender;
+import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,8 @@ public class ListCommand implements Command{
 
     private String command;
     private String description;
-    private MessageSupplier supplier;
+
+    private MessageSender sender;
     private ScrapperService service;
 
 
@@ -30,13 +32,11 @@ public class ListCommand implements Command{
                 scopes.put("size", response.get().size());
                 path = "links.mustache";
             }
-            return new SendMessage(getChatId(update), supplier.convertTemplate(path, scopes))
-                    .disableWebPagePreview(true)
-                    .parseMode(ParseMode.HTML);
+
+            return sender.send(getChatId(update), path, scopes);
         }
 
-       return new SendMessage(getChatId(update), supplier.convertTemplate("defects.mustache", scopes))
-               .parseMode(ParseMode.HTML);
+        return sender.send(getChatId(update),"defects.mustache", scopes);
     }
 
 

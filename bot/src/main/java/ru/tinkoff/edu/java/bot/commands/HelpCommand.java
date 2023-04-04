@@ -6,7 +6,9 @@ import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+
+import ru.tinkoff.edu.java.bot.utils.MessageSender;
+import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +21,8 @@ public class HelpCommand implements Command {
 
     private String command;
     private String description;
-    private MessageSupplier supplier;
+
+    private MessageSender sender;
 
     private List<? extends Command> commands;
 
@@ -28,9 +31,7 @@ public class HelpCommand implements Command {
         System.out.println(commands);
         Map<String, Object> scopes = new HashMap<>();
         scopes.put("commands", commands);
-        return new SendMessage(getChatId(update),
-                supplier.convertTemplate("help.mustache", scopes))
-                .parseMode(ParseMode.HTML);
+        return sender.send(getChatId(update),"help.mustache", scopes);
     }
 
     @Override

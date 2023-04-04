@@ -81,6 +81,6 @@ public class LinkController {
     )
     public LinkResponse deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                    @Valid @RequestBody RemoveLinkRequest request) {
-        return new LinkResponse(null, null);
+        return new LinkResponse(1L,"https://github.com/spullara/mustache.java");
     }
 }

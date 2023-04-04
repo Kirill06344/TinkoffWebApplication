@@ -22,7 +22,7 @@ public class ScrapperService {
         return client.trackLink(tgId, link);
     }
 
-    public Optional<LinkResponse> untrackLInk(Long tgId, String link) {
+    public Optional<LinkResponse> untrackLink(Long tgId, String link) {
         return client.untrackLink(tgId, link);
     }
 

@@ -1,4 +1,5 @@
 package ru.tinkoff.edu.java.bot.clients;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -53,13 +54,17 @@ public class ScrapperClientImpl implements ScrapperClient {
     @Override
     public Optional<LinkResponse> untrackLink(Long tgId, String link) {
         Mono<RemoveLinkRequest> request = Mono.just(new RemoveLinkRequest(link));
-        return webClient.post()
+        return webClient.method(HttpMethod.DELETE)
                 .uri("/links")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Tg-Chat-Id", String.valueOf(tgId))
                 .body(request, RemoveLinkRequest.class)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ClientResponse::createError)
                 .bodyToMono(LinkResponse.class)
+                .onErrorResume(WebClientResponseException.NotFound.class, notFound -> Mono.empty())
+                .onErrorResume(WebClientRequestException.class, e -> Mono.empty())
+                .onErrorResume(WebClientResponseException.BadRequest.class, e -> Mono.empty())
                 .blockOptional();
     }
 
