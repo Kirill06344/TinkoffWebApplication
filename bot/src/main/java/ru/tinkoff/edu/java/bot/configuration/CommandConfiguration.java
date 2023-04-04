@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.commands.*;
 import ru.tinkoff.edu.java.bot.service.ScrapperService;
 import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
+import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
 @Configuration
 @RequiredArgsConstructor
@@ -14,6 +15,8 @@ public class CommandConfiguration {
     private final MessageSupplier supplier;
 
     private final ScrapperService service;
+
+    private final TrackingCommandValidator validator;
 
     @Bean
     ListCommand listCommand() {
@@ -40,6 +43,8 @@ public class CommandConfiguration {
                 .command("/track")
                 .description("Start tracking link")
                 .supplier(supplier)
+                .service(service)
+                .validator(validator)
                 .build();
     }
 

@@ -62,7 +62,7 @@ public class LinkController {
     )
     public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                 @Valid @RequestBody AddLinkRequest request) {
-        return new LinkResponse(null, null);
+        return new LinkResponse(1L,"https://github.com/spullara/mustache.java");
     }
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
