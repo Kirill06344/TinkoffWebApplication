@@ -4,7 +4,6 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Builder;
-import ru.tinkoff.edu.java.bot.dto.ListLinksResponse;
 import ru.tinkoff.edu.java.bot.service.ScrapperService;
 import ru.tinkoff.edu.java.bot.utils.MessageSupplier;
 
