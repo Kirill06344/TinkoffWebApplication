@@ -19,6 +19,16 @@ public class CommandConfiguration {
     private final TrackingCommandValidator validator;
 
     @Bean
+    StartCommand startCommand() {
+        return StartCommand.builder()
+                .command("/start")
+                .description("Register your id at the system to tracking")
+                .client(client)
+                .sender(sender)
+                .build();
+    }
+
+    @Bean
     ListCommand listCommand() {
         return ListCommand.builder()
                 .command("/list")

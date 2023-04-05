@@ -22,6 +22,19 @@ public class ScrapperClientImpl implements ScrapperClient {
     public ScrapperClientImpl(String baseUrl) {
         webClient = setUpWebClient(baseUrl);
     }
+
+    @Override
+    public Optional<Long> registerChat(Long tgId) {
+        return webClient.post()
+                .uri("/tg-chat/{id}", tgId)
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError, ClientResponse::createError)
+                .bodyToMono(Long.class)
+                .onErrorResume(WebClientResponseException.NotFound.class, notFound -> Mono.empty())
+                .onErrorResume(WebClientRequestException.class, e -> Mono.empty())
+                .blockOptional();
+    }
+
     @Override
     public Optional<ListLinksResponse> getAllLinks(Long tgId) {
         return webClient.get()

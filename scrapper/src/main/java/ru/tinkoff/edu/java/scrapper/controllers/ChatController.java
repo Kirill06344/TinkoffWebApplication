@@ -12,8 +12,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/tg-chat/{id}")
 public class ChatController {
@@ -27,8 +29,9 @@ public class ChatController {
             )
         }
     )
-    public ResponseEntity<?> registerChat(@PathVariable("id") Long id) {
-        return ResponseEntity.ok("Чат успешно зарегестрирован");
+    public ResponseEntity<Long> registerChat(@PathVariable("id") Long id) {
+        log.info("User with id {} successfully registered", id);
+        return ResponseEntity.ok(id);
     }
 
     @DeleteMapping

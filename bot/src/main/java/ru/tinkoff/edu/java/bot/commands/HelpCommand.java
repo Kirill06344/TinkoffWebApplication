@@ -25,7 +25,6 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public SendMessage handle(Update update) {
-        System.out.println(commands);
         Map<String, Object> scopes = new HashMap<>();
         scopes.put("commands", commands);
         return sender.send(getChatId(update), "help.mustache", scopes);
