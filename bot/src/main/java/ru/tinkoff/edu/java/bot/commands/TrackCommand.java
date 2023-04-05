@@ -1,12 +1,10 @@
 package ru.tinkoff.edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 import lombok.Builder;
-import ru.tinkoff.edu.java.bot.service.ScrapperService;
+import ru.tinkoff.edu.java.bot.clients.ScrapperClient;
 import ru.tinkoff.edu.java.bot.utils.MessageSender;
-import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
 import java.util.Map;
@@ -21,7 +19,7 @@ public class TrackCommand implements Command {
 
     private MessageSender sender;
 
-    private ScrapperService service;
+    private ScrapperClient client;
 
     private TrackingCommandValidator validator;
 
@@ -33,7 +31,7 @@ public class TrackCommand implements Command {
             return sender.send(getChatId(update), "invalid.mustache", Map.of());
         }
 
-        var response = service.trackLink(getChatId(update), link.get());
+        var response = client.trackLink(getChatId(update), link.get());
 
         if (response.isPresent()) {
             return sender.send(getChatId(update),

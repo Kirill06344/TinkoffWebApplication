@@ -3,10 +3,10 @@ package ru.tinkoff.edu.java.bot.configuration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import ru.tinkoff.edu.java.bot.clients.ScrapperClient;
 import ru.tinkoff.edu.java.bot.commands.*;
-import ru.tinkoff.edu.java.bot.service.ScrapperService;
 import ru.tinkoff.edu.java.bot.utils.MessageSender;
-import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
 @Configuration
@@ -15,8 +15,7 @@ public class CommandConfiguration {
 
     private final MessageSender sender;
 
-    private final ScrapperService service;
-
+    private final ScrapperClient client;
     private final TrackingCommandValidator validator;
 
     @Bean
@@ -25,7 +24,7 @@ public class CommandConfiguration {
                 .command("/list")
                 .description("Show all tracked links")
                 .sender(sender)
-                .service(service)
+                .client(client)
                 .build();
     }
 
@@ -44,7 +43,7 @@ public class CommandConfiguration {
                 .command("/track")
                 .description("Start tracking link")
                 .sender(sender)
-                .service(service)
+                .client(client)
                 .validator(validator)
                 .build();
     }
@@ -54,7 +53,7 @@ public class CommandConfiguration {
         return UntrackCommand.builder().command("/untrack")
                 .description("Stop tracking link")
                 .sender(sender)
-                .service(service)
+                .client(client)
                 .validator(validator)
                 .build();
     }
