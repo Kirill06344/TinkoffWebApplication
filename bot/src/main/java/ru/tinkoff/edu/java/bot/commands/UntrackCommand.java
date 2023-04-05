@@ -5,16 +5,13 @@ import java.util.Optional;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import ru.tinkoff.edu.java.bot.clients.ScrapperClient;
 import ru.tinkoff.edu.java.bot.utils.MessageSender;
 import ru.tinkoff.edu.java.bot.utils.TrackingCommandValidator;
 
-@Builder
-public class UntrackCommand implements Command {
-    private String command;
-    private String description;
-
+@SuperBuilder
+public class UntrackCommand extends AbstractCommand {
     private MessageSender sender;
 
     private ScrapperClient client;
@@ -42,15 +39,5 @@ public class UntrackCommand implements Command {
     @Override
     public boolean supports(Update update) {
         return validator.supports(update, command);
-    }
-
-    @Override
-    public String command() {
-        return command;
-    }
-
-    @Override
-    public String description() {
-        return description;
     }
 }

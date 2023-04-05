@@ -2,19 +2,16 @@ package ru.tinkoff.edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import lombok.Builder;
+
+import lombok.experimental.SuperBuilder;
 import ru.tinkoff.edu.java.bot.clients.ScrapperClient;
 import ru.tinkoff.edu.java.bot.utils.MessageSender;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Builder
-public class ListCommand implements Command{
-
-    private String command;
-    private String description;
-
+@SuperBuilder
+public class ListCommand extends AbstractCommand {
     private MessageSender sender;
 
     private ScrapperClient client;
@@ -35,17 +32,6 @@ public class ListCommand implements Command{
             return sender.send(getChatId(update), path, scopes);
         }
 
-        return sender.send(getChatId(update),"defects.mustache", scopes);
-    }
-
-
-    @Override
-    public String command() {
-        return command;
-    }
-
-    @Override
-    public String description() {
-        return description;
+        return sender.send(getChatId(update), "defects.mustache", scopes);
     }
 }
