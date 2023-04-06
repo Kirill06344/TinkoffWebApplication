@@ -54,8 +54,8 @@ public class UrlHandlerTest {
         var gitHubResponse = (GitHubResult)(response.get());
 
         //then
-        assertEquals(gitHubResponse.name(), owner);
-        assertEquals(gitHubResponse.repository(), repo);
+        assertEquals(owner, gitHubResponse.name());
+        assertEquals(repo, gitHubResponse.repository());
     }
 
     @ParameterizedTest
@@ -69,7 +69,7 @@ public class UrlHandlerTest {
         var stackOverflowResponse = (StackOverflowResult) (response.get());
 
         //then
-        assertEquals(stackOverflowResponse.id(), id);
+        assertEquals(id, stackOverflowResponse.id());
     }
 
     private static Stream<String> notUrlsProvider() {

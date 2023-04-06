@@ -60,7 +60,7 @@ public class StackOverflowParserTest {
         var stackOverflowResponse = (StackOverflowResult) (response.get());
 
         //then
-        assertEquals(stackOverflowResponse.id(), id);
+        assertEquals(id, stackOverflowResponse.id());
     }
 
 

@@ -58,8 +58,8 @@ public class GithubParserTest {
         var gitHubResponse = (GitHubResult)(response.get());
 
         //then
-        assertEquals(gitHubResponse.name(), owner);
-        assertEquals(gitHubResponse.repository(), repo);
+        assertEquals(owner, gitHubResponse.name());
+        assertEquals(repo, gitHubResponse.repository());
     }
 
 
