@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateServlet implements UpdatesListener{
+public class UpdateListenerImpl implements UpdatesListener{
 
     private final TelegramBot bot;
 
