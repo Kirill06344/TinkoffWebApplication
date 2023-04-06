@@ -19,7 +19,15 @@
         <artifactId>annotations</artifactId>
         <version>23.1.0</version>
     </dependency>
-</dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.20.0</version>
+        </dependency>
+
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
