@@ -14,7 +14,8 @@ public abstract class UrlAbstractParser implements UrlParser {
         if (url.getPort() != -1 || (!url.getProtocol().equals("http") && !url.getProtocol().equals("https"))) {
             return Optional.empty();
         }
-        return nextOrEmpty(url);
+
+        return parse(url);
     }
     @Override
     public final boolean isInvalidHostName(URL url, String host) {

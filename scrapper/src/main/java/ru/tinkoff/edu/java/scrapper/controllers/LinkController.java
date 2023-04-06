@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,15 +21,18 @@ import ru.tinkoff.edu.java.scrapper.dto.LinkResponse;
 import ru.tinkoff.edu.java.scrapper.dto.ListLinksResponse;
 import ru.tinkoff.edu.java.scrapper.dto.RemoveLinkRequest;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/links")
+@Slf4j
 public class LinkController {
 
     private static final String TG_HEADER = "Tg-Chat-Id";
 
-    @GetMapping(consumes = APPLICATION_JSON_VALUE)
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получить все отслеживаемые ссылки",
         responses = {
             @ApiResponse(responseCode = "200", description = "Ссылки успешно получены"),
@@ -39,7 +43,11 @@ public class LinkController {
         }
     )
     public ListLinksResponse getAllLinks(@RequestHeader(TG_HEADER) Long tgChatId) {
-        return new ListLinksResponse(null, null);
+        log.info("Request form tgId:" + tgChatId);
+        return new ListLinksResponse(List.of(
+                new LinkResponse(10L, "https://stackoverflow.com/questions/53182250"),
+                new LinkResponse(12L, "https://github.com/spullara/mustache.java")
+        ), 2);
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -54,7 +62,7 @@ public class LinkController {
     )
     public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                 @Valid @RequestBody AddLinkRequest request) {
-        return new LinkResponse(null, null);
+        return new LinkResponse(1L,"https://github.com/spullara/mustache.java");
     }
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -73,6 +81,6 @@ public class LinkController {
     )
     public LinkResponse deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                    @Valid @RequestBody RemoveLinkRequest request) {
-        return new LinkResponse(null, null);
+        return new LinkResponse(1L,"https://github.com/spullara/mustache.java");
     }
 }

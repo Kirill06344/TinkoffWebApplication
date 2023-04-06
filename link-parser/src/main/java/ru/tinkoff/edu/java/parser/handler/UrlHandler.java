@@ -13,8 +13,8 @@ public class UrlHandler {
 
     private final UrlParser parser;
     public UrlHandler() {
-        parser = new UrlGitHubParser()
-                .setNext(new UrlStackOverflowParser());
+        parser = new UrlGitHubParser();
+        parser.setNext(new UrlStackOverflowParser());
     }
 
     public Optional<UrlResult> getParseResult(String path) {

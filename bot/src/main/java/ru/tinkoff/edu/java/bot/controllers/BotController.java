@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.bot.web.controllers;
+package ru.tinkoff.edu.java.bot.controllers;
 
 
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import ru.tinkoff.edu.java.bot.web.dto.LinkUpdateRequest;
+import ru.tinkoff.edu.java.bot.dto.LinkUpdateRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

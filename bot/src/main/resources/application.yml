@@ -1,6 +1,15 @@
 app:
   test: 12
 
+bot:
+  token: ${telegram.api.token}
+
+scrapper:
+  host: http://localhost:8080/
+
+server:
+  port: 8082
+
 springdoc:
   swagger-ui:
     path: /swagger-ui
