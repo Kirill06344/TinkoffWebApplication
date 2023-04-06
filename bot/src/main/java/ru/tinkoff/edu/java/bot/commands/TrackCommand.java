@@ -25,18 +25,18 @@ public class TrackCommand extends AbstractCommand {
     public SendMessage handle(Update update) {
         Optional<String> link = validator.getLink(update);
         if (link.isEmpty()) {
-            return sender.send(getChatId(update), "invalid.mustache", Map.of());
+            return sender.send(getChatId(update), "responses/invalid.mustache", Map.of());
         }
 
         var response = client.trackLink(getChatId(update), link.get());
 
         if (response.isPresent()) {
             return sender.send(getChatId(update),
-                    "success_tracking.mustache",
+                    "responses/success_tracking.mustache",
                     Map.of("link", response.get().link()));
         }
 
-        return sender.send(getChatId(update), "defects.mustache", Map.of());
+        return sender.send(getChatId(update), "responses/defects.mustache", Map.of());
     }
 
     @Override

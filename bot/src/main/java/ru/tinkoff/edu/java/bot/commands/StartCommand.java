@@ -24,10 +24,10 @@ public class StartCommand extends AbstractCommand{
 
         if (response.isEmpty()) {
             log.info("Fail to register id {}", getChatId(update));
-            return sender.send(getChatId(update), "fail_register.mustache", Map.of());
+            return sender.send(getChatId(update), "responses/fail_register.mustache", Map.of());
         }
 
         log.info("User with {} succesfully registered", response.get());
-        return sender.send(getChatId(update), "success_register.mustache", Map.of());
+        return sender.send(getChatId(update), "responses/success_register.mustache", Map.of());
     }
 }

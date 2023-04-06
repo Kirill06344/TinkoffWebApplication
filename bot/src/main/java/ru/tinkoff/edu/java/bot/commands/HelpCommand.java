@@ -27,7 +27,7 @@ public class HelpCommand extends AbstractCommand {
     public SendMessage handle(Update update) {
         Map<String, Object> scopes = new HashMap<>();
         scopes.put("commands", commands);
-        return sender.send(getChatId(update), "help.mustache", scopes);
+        return sender.send(getChatId(update), "responses/help.mustache", scopes);
     }
 
     @Autowired

@@ -22,16 +22,16 @@ public class ListCommand extends AbstractCommand {
         var response = client.getAllLinks(getChatId(update));
         Map<String, Object> scopes = new HashMap<>();
         if (response.isPresent()) {
-            String path = "empty.mustache";
+            String path = "responses/empty.mustache";
             if (response.get().size() != 0) {
                 scopes.put("links", response.get().links());
                 scopes.put("size", response.get().size());
-                path = "links.mustache";
+                path = "responses/links.mustache";
             }
 
             return sender.send(getChatId(update), path, scopes);
         }
 
-        return sender.send(getChatId(update), "defects.mustache", scopes);
+        return sender.send(getChatId(update), "responses/defects.mustache", scopes);
     }
 }

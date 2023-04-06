@@ -22,18 +22,18 @@ public class UntrackCommand extends AbstractCommand {
     public SendMessage handle(Update update) {
         Optional<String> link = validator.getLink(update);
         if (link.isEmpty()) {
-            return sender.send(getChatId(update), "invalid.mustache", Map.of());
+            return sender.send(getChatId(update), "responses/invalid.mustache", Map.of());
         }
 
         var response = client.untrackLink(getChatId(update), link.get());
 
         if (response.isPresent()) {
             return sender.send(getChatId(update),
-                    "success_untracking.mustache",
+                    "responses/success_untracking.mustache",
                     Map.of("link", response.get().link()));
         }
 
-        return sender.send(getChatId(update), "defects.mustache", Map.of());
+        return sender.send(getChatId(update), "responses/defects.mustache", Map.of());
     }
 
     @Override
