@@ -5,7 +5,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 
 import javax.sql.DataSource;
 
-public abstract class AbstractContainerBaseTest {
+public abstract class AbstractContainerBaseTest implements AutoCloseable {
     static final PostgreSQLContainer<?> MY_POSTGRES_CONTAINER;
 
     static {
@@ -23,5 +23,10 @@ public abstract class AbstractContainerBaseTest {
         config.setPassword(container.getPassword());
         config.setDriverClassName(container.getDriverClassName());
         return new HikariDataSource(config);
+    }
+
+    @Override
+    public void close() {
+        MY_POSTGRES_CONTAINER.close();
     }
 }
