@@ -61,6 +61,22 @@
                 <version>3.0.4</version>
             </dependency>
 
+                <dependency>
+                    <groupId>org.testcontainers</groupId>
+                    <artifactId>testcontainers-bom</artifactId>
+                    <version>${testcontainers.version}</version>
+                    <type>pom</type>
+                    <scope>import</scope>
+                </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.9.0-M1</version>
+                <scope>test</scope>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -122,5 +138,6 @@
         <spring-cloud.version>2022.0.0</spring-cloud.version>
         <spring-boot.version>3.0.1</spring-boot.version>
         <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
+        <testcontainers.version>1.18.0</testcontainers.version>
     </properties>
 </project>

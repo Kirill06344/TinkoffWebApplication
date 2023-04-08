@@ -1,4 +1,4 @@
-create table chat
+create table if not exists chat
 (
     id bigint primary key check (id > 0)
 );
