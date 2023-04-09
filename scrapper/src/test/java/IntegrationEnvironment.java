@@ -15,7 +15,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +36,15 @@ public class IntegrationEnvironment extends AbstractContainerBaseTest {
     public void implement_migrationsIntoDatabase() {
         DataSource dataSource = getDataSource(MY_POSTGRES_CONTAINER);
         assertDoesNotThrow(() -> startMigrations(dataSource));
+        try {
+            assertTrue(tableExists(dataSource.getConnection(), "chat"));
+            assertTrue(tableExists(dataSource.getConnection(), "link"));
+            assertTrue(tableExists(dataSource.getConnection(), "chat_link"));
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            fail("Connection error!");
+        }
     }
 
     public void startMigrations(DataSource dataSource) throws SQLException, LiquibaseException, FileNotFoundException {
@@ -41,5 +53,12 @@ public class IntegrationEnvironment extends AbstractContainerBaseTest {
         Liquibase liquibase = new Liquibase("master.xml", new DirectoryResourceAccessor(PATH_TO_MIGRATIONS), database);
         log.info(liquibase.getChangeLogFile());
         liquibase.update(new Contexts(), new LabelExpression());
+    }
+
+    private boolean tableExists(Connection connection, String tableName) throws SQLException {
+        DatabaseMetaData meta = connection.getMetaData();
+        ResultSet resultSet = meta.getTables(null, null, tableName, new String[] {"TABLE"});
+
+        return resultSet.next();
     }
 }
