@@ -30,7 +30,7 @@ public class IntegrationEnvironment extends AbstractContainerBaseTest {
             .resolve("migrations");
 
     @Test
-    public void test() {
+    public void implement_migrationsIntoDatabase() {
         DataSource dataSource = getDataSource(MY_POSTGRES_CONTAINER);
         assertDoesNotThrow(() -> startMigrations(dataSource));
     }
