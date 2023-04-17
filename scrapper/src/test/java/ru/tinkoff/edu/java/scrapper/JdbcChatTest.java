@@ -91,7 +91,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
     void should_deleteByIdCorrectlyWithSomeRows() {
         long id = 123L;
         repository.deleteById(id);
-        assertTrue(repository.findChatById(TEST_CHAT_ID).isEmpty());
+        assertTrue(repository.findChatById(id).isEmpty());
         var chats = repository.findAll();
         assertEquals(2, chats.size());
         assertFalse(chats.contains(new Chat(123L)));
