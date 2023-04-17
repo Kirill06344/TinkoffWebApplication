@@ -7,9 +7,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
-import ru.tinkoff.edu.java.scrapper.repository.ChatRowMapper;
+import ru.tinkoff.edu.java.scrapper.repository.mappers.ChatRowMapper;
 
 import java.util.List;
 import java.util.Optional;
