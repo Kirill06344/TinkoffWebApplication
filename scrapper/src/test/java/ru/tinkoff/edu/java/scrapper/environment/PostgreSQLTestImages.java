@@ -1,3 +1,5 @@
+package ru.tinkoff.edu.java.scrapper.environment;
+
 import org.testcontainers.utility.DockerImageName;
 
 public interface PostgreSQLTestImages {

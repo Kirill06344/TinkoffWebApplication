@@ -12,3 +12,9 @@ stackoverflow:
 
 github:
   url: https://api.github.com
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    password: password
+    username: postgres
