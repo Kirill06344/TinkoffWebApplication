@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface Repository<T, U> {
 
-    Optional<Link> add(T entity);
+    Optional<T> add(T entity);
 
     List<T> findAll();
     void deleteById(U id);

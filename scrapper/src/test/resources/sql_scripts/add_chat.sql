@@ -1,0 +1,1 @@
+INSERT INTO chat(id) values (1)
