@@ -44,7 +44,10 @@ public class LinkUpdaterImpl implements LinkUpdater {
             if (result instanceof GitHubResult) {
                 GitHubResponse response = manager.getGitHubRepositoryInformation((GitHubResult) result).get();
                 log.info(response.fullName() + " " + response.pushedAt());
-                if (linkRepository.updateUpdatedAtTime(link.getId(), response.pushedAt().toLocalDateTime()) != 0) {
+                int update = linkRepository.updateUpdatedAtTime(link.getId(), response.pushedAt()
+                        .atZoneSameInstant(ZoneId.systemDefault())
+                        .toLocalDateTime());
+                if (update != 0) {
                     botClient.sendUpdate(buildRequest(link));
                 }
             } else {
