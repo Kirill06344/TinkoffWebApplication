@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
-import ru.tinkoff.edu.java.scrapper.exceptions.InvalidQuestionInformation;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
 import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 
