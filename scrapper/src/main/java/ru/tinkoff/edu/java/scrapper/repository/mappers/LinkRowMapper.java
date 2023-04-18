@@ -7,6 +7,7 @@ import ru.tinkoff.edu.java.scrapper.entity.Link;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 @Component
 public class LinkRowMapper implements RowMapper<Link> {
@@ -15,7 +16,7 @@ public class LinkRowMapper implements RowMapper<Link> {
         return new Link()
                 .setId(rs.getLong("id"))
                 .setUrl(rs.getString("url"))
-                .setCheckedAt(rs.getDate("checked_at").toLocalDate().atStartOfDay())
-                .setUpdatedAt(rs.getDate("updated_at").toLocalDate().atStartOfDay());
+                .setCheckedAt(rs.getObject("checked_at", LocalDateTime.class))
+                .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
     }
 }

@@ -116,6 +116,6 @@ public class JdbcLinkRepository implements LinkRepository {
         }
         LocalDateTime prevDate = link.get().getUpdatedAt();
         LocalDateTime nextDate = jdbcTemplate.queryForObject(SQL_UPDATE_UPDATED_AT_TIME, LocalDateTime.class, updatedAt, id);
-        return prevDate.equals(nextDate) ? 1 : 0;
+        return prevDate.equals(nextDate) ? 0 : 1;
     }
 }
