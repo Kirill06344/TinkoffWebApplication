@@ -18,7 +18,7 @@ public class BotController {
 
     @PostMapping(path = "/updates", produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Отправить обновление")
-    public ResponseEntity<?> updateLink(@Valid @RequestBody LinkUpdateRequest request) {
+    public ResponseEntity<String> updateLink(@Valid @RequestBody LinkUpdateRequest request) {
         return ResponseEntity.ok().body("OK");
     }
 }
