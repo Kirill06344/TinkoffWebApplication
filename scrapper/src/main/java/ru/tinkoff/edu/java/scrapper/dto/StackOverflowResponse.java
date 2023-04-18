@@ -8,7 +8,7 @@ public record StackOverflowResponse(
     @JsonProperty("answer_count")
     Integer answerCount,
 
-    @JsonProperty("creation_date")
-    OffsetDateTime creationDate
+    @JsonProperty("last_activity_date")
+    OffsetDateTime lastActivityDate
 ) {
 }

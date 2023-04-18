@@ -17,7 +17,7 @@ import java.util.Optional;
 public class JdbcChatLinkRepository implements ChatLinkRepository {
 
     private static final String SQL_FIND_CHAT_LINK_BY_CHAT_ID = "select * from chat_link where chat_id = ?";
-    private static final String SQL_FIND_CHAT_LINK_BY_LINK_ID = "select * from chat_link where chat_id = ?";
+    private static final String SQL_FIND_CHAT_LINK_BY_LINK_ID = "select * from chat_link where link_id = ?";
     private static final String SQL_DELETE_ALL_CHAT_LINKS_BY_CHAT_ID = "delete from chat_link where chat_id = ?";
     private static final String SQL_DELETE_ALL_CHAT_LINKS_BY_LINK_ID = "delete from chat_link where link_id = ?";
     private static final String SQL_DELETE_CHAT_LINK_BY_CHAT_LINK = "delete from chat_link where chat_id = ? and link_id = ?";

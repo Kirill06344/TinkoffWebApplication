@@ -8,7 +8,7 @@ springdoc:
     path: /swagger-ui
 
 bot:
-  host: http://localhost:8080/
+  host: http://localhost:8082/
 
 stackoverflow:
   url: https://api.stackexchange.com/2.3

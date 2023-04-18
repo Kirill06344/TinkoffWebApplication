@@ -23,8 +23,8 @@ public class JdbcLinkService implements LinkService {
     private final JdbcChatLinkRepository chatLinkRepository;
 
     @Override
-    public Link add(long tgChatId, URI url) {
-        var link = linkRepository.add(new Link().setUrl(url.toString()).setCheckedAt(LocalDateTime.now()));
+    public Link add(long tgChatId, URI url, LocalDateTime updatedAt) {
+        var link = linkRepository.add(new Link().setUrl(url.toString()).setCheckedAt(LocalDateTime.now()).setUpdatedAt(updatedAt));
         if (link.isPresent()) {
             chatLinkRepository.add(new ChatLink(tgChatId, link.get().getId()));
             return link.get();

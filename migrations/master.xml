@@ -12,4 +12,6 @@
     <include file="scripts/2023-04-06-CRS-1_create_link_table.sql"/>
     <include file="scripts/2023-04-06-CRS-1_create_chat_link_table.sql"/>
     <include file="scripts/2023-04-18-CRS-1_add_check_column_link_table.sql"/>
+    <include file="scripts/2023-04-18-CRS-1_add_update_column_link_table.sql"/>
+
 </databaseChangeLog>
