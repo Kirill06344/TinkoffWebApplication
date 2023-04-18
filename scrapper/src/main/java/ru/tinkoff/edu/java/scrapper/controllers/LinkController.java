@@ -17,12 +17,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import ru.tinkoff.edu.java.parser.handler.UrlHandler;
-import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
-import ru.tinkoff.edu.java.scrapper.LinkValidator;
+import ru.tinkoff.edu.java.scrapper.LinkManager;
 import ru.tinkoff.edu.java.scrapper.dto.*;
 import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
-import ru.tinkoff.edu.java.scrapper.services.JdbcTgChatService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,7 +34,7 @@ public class LinkController {
 
     private final JdbcLinkService linkService;
 
-    private final LinkValidator validator;
+    private final LinkManager validator;
 
     private static final String TG_HEADER = "Tg-Chat-Id";
 
@@ -69,7 +66,7 @@ public class LinkController {
     )
     public ResponseEntity<LinkResponse> addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                                 @Valid @RequestBody AddLinkRequest request) {
-        var result = validator.getLinkResult(request);
+        var result = validator.getLinkResult(request.link());
         if (result.isEmpty() || !validator.isExistingLink(result.get())) {
             return ResponseEntity.badRequest().body(new LinkResponse(0L, request.link()));
         }
