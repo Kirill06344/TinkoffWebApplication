@@ -18,7 +18,6 @@ import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -43,17 +42,11 @@ public class LinkUpdaterImpl implements LinkUpdater {
             UrlResult result = manager.getLinkResult(link.getUrl()).get();
             if (result instanceof GitHubResult) {
                 GitHubResponse response = manager.getGitHubRepositoryInformation((GitHubResult) result).get();
-                log.info(response.fullName() + " " + response.pushedAt());
-                int update = linkRepository.updateUpdatedAtTime(link.getId(), response.pushedAt()
-                        .atZoneSameInstant(ZoneId.systemDefault())
-                        .toLocalDateTime());
-                if (update != 0) {
-                    botClient.sendUpdate(buildRequest(link));
-                }
+                sendIfItUpdated(link, response.pushedAt());
             } else {
                 StackOverflowResponse response = manager
                         .getStackOverflowQuestionInformation((StackOverflowResult) result).get();
-                log.info(response.answerCount() + " " + response.lastActivityDate());
+                sendIfItUpdated(link, response.lastActivityDate());
             }
             linkRepository.updateCheckedAtTime(link.getId());
         }
@@ -66,5 +59,14 @@ public class LinkUpdaterImpl implements LinkUpdater {
                 .toList();
 
         return new LinkUpdateRequest(link.getId(), link.getUrl(), description, ids);
+    }
+
+    private void sendIfItUpdated(Link link,OffsetDateTime date) {
+        int update = linkRepository.updateUpdatedAtTime(link.getId(),date
+                .atZoneSameInstant(ZoneId.systemDefault())
+                .toLocalDateTime());
+        if (update != 0) {
+            botClient.sendUpdate(buildRequest(link));
+        }
     }
 }

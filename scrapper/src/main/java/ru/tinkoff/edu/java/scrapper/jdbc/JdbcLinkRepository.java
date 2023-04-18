@@ -25,7 +25,7 @@ public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SQL_UPDATE_CHECKED_AT_TIME = "update link set checked_at = ? where id = ?";
 
-    private static final String SQL_UPDATE_UPDATED_AT_TIME = "update link set updated_at = ? where id = ?";
+    private static final String SQL_UPDATE_UPDATED_AT_TIME = "update link set updated_at = ? where id = ? returning updated_at";
 
     private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
             "extract(epoch from ? - link.checked_at) / 60 > 1";
@@ -110,6 +110,12 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public int updateUpdatedAtTime(long id, LocalDateTime updatedAt) {
-        return jdbcTemplate.update(SQL_UPDATE_UPDATED_AT_TIME, updatedAt, id);
+        var link = findLinkById(id);
+        if (link.isEmpty()){
+            return 0;
+        }
+        LocalDateTime prevDate = link.get().getUpdatedAt();
+        LocalDateTime nextDate = jdbcTemplate.queryForObject(SQL_UPDATE_UPDATED_AT_TIME, LocalDateTime.class, updatedAt, id);
+        return prevDate.equals(nextDate) ? 1 : 0;
     }
 }
