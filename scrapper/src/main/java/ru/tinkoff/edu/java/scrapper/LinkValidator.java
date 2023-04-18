@@ -38,7 +38,7 @@ public class LinkValidator {
     }
 
     private boolean isExistingStackoverflowLink(StackOverflowResult result) {
-        return stackOverflowService.getQuestionInfo(result.id()).isEmpty();
+        return stackOverflowService.getQuestionInfo(result.id()).isPresent();
     }
 
 }
