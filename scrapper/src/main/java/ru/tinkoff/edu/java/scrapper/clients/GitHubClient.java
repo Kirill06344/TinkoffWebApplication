@@ -2,7 +2,9 @@ package ru.tinkoff.edu.java.scrapper.clients;
 
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 
+import java.util.Optional;
+
 public interface GitHubClient {
-    GitHubResponse fetchRepositoryInfo(String owner, String repos);
+    Optional<GitHubResponse> fetchRepositoryInfo(String owner, String repos);
 
 }
