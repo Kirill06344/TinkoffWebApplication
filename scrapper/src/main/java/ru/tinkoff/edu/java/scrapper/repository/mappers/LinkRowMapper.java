@@ -15,6 +15,7 @@ public class LinkRowMapper implements RowMapper<Link> {
         return new Link()
                 .setId(rs.getLong("id"))
                 .setUrl(rs.getString("url"))
-                .setCheckedAt(rs.getDate("checked_at").toLocalDate().atStartOfDay());
+                .setCheckedAt(rs.getDate("checked_at").toLocalDate().atStartOfDay())
+                .setUpdatedAt(rs.getDate("updated_at").toLocalDate().atStartOfDay());
     }
 }

@@ -15,4 +15,5 @@ public class Link {
     private Long id;
     private String url;
     private LocalDateTime checkedAt;
+    private LocalDateTime updatedAt;
 }

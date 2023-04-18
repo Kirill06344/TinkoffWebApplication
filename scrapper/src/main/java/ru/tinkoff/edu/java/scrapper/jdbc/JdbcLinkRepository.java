@@ -20,9 +20,12 @@ import java.util.Optional;
 public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SQL_ADD_LINK =
-            "insert into link(url, checked_at) values(?, ?) on conflict do nothing returning id,url,checked_at";
+            "insert into link(url, checked_at, updated_at) values(?, ?, ?) " +
+                    "on conflict do nothing returning id,url,checked_at, updated_at";
 
     private static final String SQL_UPDATE_CHECKED_AT_TIME = "update link set checked_at = ? where id = ?";
+
+    private static final String SQL_UPDATE_UPDATED_AT_TIME = "update link set updated_at = ? where id = ?";
 
     private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
             "extract(epoch from ? - link.checked_at) / 60 > 10";
@@ -47,7 +50,12 @@ public class JdbcLinkRepository implements LinkRepository {
         }
 
         try {
-            var res = jdbcTemplate.queryForObject(SQL_ADD_LINK, linkMapper, entity.getUrl(), LocalDateTime.now());
+            var res = jdbcTemplate.queryForObject(SQL_ADD_LINK,
+                    linkMapper,
+                    entity.getUrl(),
+                    LocalDateTime.now(),
+                    entity.getUpdatedAt());
+
             return Optional.ofNullable(res);
         } catch (DataAccessException ex) {
             log.error(ex.getMessage());
@@ -98,5 +106,10 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public void updateCheckedAtTime(long id) {
         jdbcTemplate.update(SQL_UPDATE_CHECKED_AT_TIME, LocalDateTime.now(), id);
+    }
+
+    @Override
+    public int updateUpdatedAtTime(long id, LocalDateTime updatedAt) {
+        return jdbcTemplate.update(SQL_UPDATE_UPDATED_AT_TIME, updatedAt, id);
     }
 }

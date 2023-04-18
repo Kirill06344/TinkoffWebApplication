@@ -17,12 +17,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.scrapper.LinkManager;
 import ru.tinkoff.edu.java.scrapper.dto.*;
 import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -34,7 +36,7 @@ public class LinkController {
 
     private final JdbcLinkService linkService;
 
-    private final LinkManager validator;
+    private final LinkManager manager;
 
     private static final String TG_HEADER = "Tg-Chat-Id";
 
@@ -66,14 +68,15 @@ public class LinkController {
     )
     public ResponseEntity<LinkResponse> addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                                 @Valid @RequestBody AddLinkRequest request) {
-        var result = validator.getLinkResult(request.link());
-        if (result.isEmpty() || !validator.isExistingLink(result.get())) {
+        var result = manager.getLinkResult(request.link());
+        if (result.isEmpty() || !manager.isExistingLink(result.get())) {
             return ResponseEntity.badRequest().body(new LinkResponse(0L, request.link()));
         }
 
         try {
+            LocalDateTime updatedAt = manager.getUpdatedTime(result.get());
             URI uri = new URI(request.link());
-            var link = linkService.add(tgChatId, uri);
+            var link = linkService.add(tgChatId, uri, updatedAt);
             return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
         } catch (URISyntaxException ex) {
             log.info("URI exception!");
