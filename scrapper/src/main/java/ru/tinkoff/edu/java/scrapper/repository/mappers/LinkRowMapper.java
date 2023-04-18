@@ -14,6 +14,7 @@ public class LinkRowMapper implements RowMapper<Link> {
     public Link mapRow(ResultSet rs, int rowNum) throws SQLException {
         return new Link()
                 .setId(rs.getLong("id"))
-                .setUrl(rs.getString("url"));
+                .setUrl(rs.getString("url"))
+                .setCheckedAt(rs.getDate("checked_at").toLocalDate().atStartOfDay());
     }
 }

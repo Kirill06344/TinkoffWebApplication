@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.mappers.LinkRowMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,13 @@ import java.util.Optional;
 @Slf4j
 public class JdbcLinkRepository implements LinkRepository {
 
-    private static final String SQL_ADD_LINK = "insert into link(url) values(?) on conflict do nothing returning id,url";
+    private static final String SQL_ADD_LINK =
+            "insert into link(url, checked_at) values(?, ?) on conflict do nothing returning id,url,checked_at";
+
+    private static final String SQL_UPDATE_CHECKED_AT_TIME = "update link set checked_at = ? where id = ?";
+
+    private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
+            "extract(epoch from ? - link.checked_at) / 60 > 10";
 
     private static final String SQL_FIND_LINK_BY_URL = "select * from link where url = ?";
 
@@ -40,7 +47,7 @@ public class JdbcLinkRepository implements LinkRepository {
         }
 
         try {
-            var res = jdbcTemplate.queryForObject(SQL_ADD_LINK, linkMapper, entity.getUrl());
+            var res = jdbcTemplate.queryForObject(SQL_ADD_LINK, linkMapper, entity.getUrl(), LocalDateTime.now());
             return Optional.ofNullable(res);
         } catch (DataAccessException ex) {
             log.error(ex.getMessage());
@@ -80,5 +87,16 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public void deleteLinkByUrl(String url) {
         jdbcTemplate.update(SQL_DELETE_LINK_BY_URL, url);
+    }
+
+    @Override
+    public List<Link> findAllOldLinks() {
+        log.info(LocalDateTime.now().toString());
+        return jdbcTemplate.query(SQL_FIND_ALL_OLD_LINKS, linkMapper, LocalDateTime.now());
+    }
+
+    @Override
+    public void updateCheckedAtTime(long id) {
+        jdbcTemplate.update(SQL_UPDATE_CHECKED_AT_TIME, LocalDateTime.now(), id);
     }
 }

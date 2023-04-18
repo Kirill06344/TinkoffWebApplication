@@ -9,6 +9,7 @@ import ru.tinkoff.edu.java.scrapper.jdbc.JdbcChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.jdbc.JdbcLinkRepository;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +24,7 @@ public class JdbcLinkService implements LinkService {
 
     @Override
     public Link add(long tgChatId, URI url) {
-        var link = linkRepository.add(new Link().setUrl(url.toString()));
+        var link = linkRepository.add(new Link().setUrl(url.toString()).setCheckedAt(LocalDateTime.now()));
         if (link.isPresent()) {
             chatLinkRepository.add(new ChatLink(tgChatId, link.get().getId()));
             return link.get();
