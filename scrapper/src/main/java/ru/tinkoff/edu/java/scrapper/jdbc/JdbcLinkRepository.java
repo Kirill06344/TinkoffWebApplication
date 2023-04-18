@@ -22,6 +22,8 @@ public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SQL_FIND_LINK_BY_URL = "select * from link where url = ?";
 
+    private static final String SQL_FIND_LINK_BY_ID = "select * from link where id = ?";
+
     private static final String SQL_FIND_ALL_LINKS = "select * from link";
 
     private static final String SQL_DELETE_LINK_BY_ID = "delete from link where id = ?";
@@ -52,8 +54,8 @@ public class JdbcLinkRepository implements LinkRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        jdbcTemplate.update(SQL_DELETE_LINK_BY_ID, id);
+    public int deleteById(Long id) {
+        return jdbcTemplate.update(SQL_DELETE_LINK_BY_ID, id);
     }
 
     @Override
@@ -64,6 +66,15 @@ public class JdbcLinkRepository implements LinkRepository {
             return Optional.empty();
         }
 
+    }
+
+    @Override
+    public Optional<Link> findLinkById(long id) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SQL_FIND_LINK_BY_ID, linkMapper, id));
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
     }
 
     @Override

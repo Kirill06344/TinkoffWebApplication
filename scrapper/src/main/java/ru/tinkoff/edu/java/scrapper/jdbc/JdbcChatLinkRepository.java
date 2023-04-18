@@ -54,13 +54,13 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
     }
 
     @Override
-    public void deleteAllChatLinksByChatId(long chatId) {
-        jdbcTemplate.update(SQL_DELETE_ALL_CHAT_LINKS_BY_CHAT_ID, chatId);
+    public int deleteAllChatLinksByChatId(long chatId) {
+        return jdbcTemplate.update(SQL_DELETE_ALL_CHAT_LINKS_BY_CHAT_ID, chatId);
     }
 
     @Override
-    public void deleteAllChatLinksByLinkId(long linkId) {
-        jdbcTemplate.update(SQL_DELETE_ALL_CHAT_LINKS_BY_LINK_ID, linkId);
+    public int deleteAllChatLinksByLinkId(long linkId) {
+        return jdbcTemplate.update(SQL_DELETE_ALL_CHAT_LINKS_BY_LINK_ID, linkId);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class JdbcChatLinkRepository implements ChatLinkRepository {
     }
 
     @Override
-    public void deleteById(ChatLink id) {
-        jdbcTemplate.update(SQL_DELETE_CHAT_LINK_BY_CHAT_LINK, id.getChatId(), id.getLinkId());
+    public int deleteById(ChatLink id) {
+        return jdbcTemplate.update(SQL_DELETE_CHAT_LINK_BY_CHAT_LINK, id.getChatId(), id.getLinkId());
     }
 }

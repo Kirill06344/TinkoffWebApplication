@@ -52,8 +52,8 @@ public class JdbcChatRepository implements ChatRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        jdbcTemplate.update(SQL_DELETE_CHAT_BY_ID, id);
+    public int deleteById(Long id) {
+        return jdbcTemplate.update(SQL_DELETE_CHAT_BY_ID, id);
     }
 
     @Override

@@ -10,5 +10,5 @@ public interface Repository<T, U> {
     Optional<T> add(T entity);
 
     List<T> findAll();
-    void deleteById(U id);
+    int deleteById(U id);
 }

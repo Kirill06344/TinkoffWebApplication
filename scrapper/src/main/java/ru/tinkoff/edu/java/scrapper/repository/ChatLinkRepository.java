@@ -13,8 +13,8 @@ public interface ChatLinkRepository extends Repository<ChatLink, ChatLink>{
 
     Optional<ChatLink> findChatLink(ChatLink entity);
 
-    void deleteAllChatLinksByChatId(long chatId);
+    int deleteAllChatLinksByChatId(long chatId);
 
-    void deleteAllChatLinksByLinkId(long linkId);
+    int deleteAllChatLinksByLinkId(long linkId);
 
 }

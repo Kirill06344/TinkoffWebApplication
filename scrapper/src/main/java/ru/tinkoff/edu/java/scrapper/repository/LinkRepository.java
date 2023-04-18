@@ -5,5 +5,7 @@ import java.util.Optional;
 
 public interface LinkRepository extends Repository<Link, Long> {
     Optional<Link> findLinkByUrl(String url);
+
+    Optional<Link> findLinkById(long id);
     void deleteLinkByUrl(String url);
 }
