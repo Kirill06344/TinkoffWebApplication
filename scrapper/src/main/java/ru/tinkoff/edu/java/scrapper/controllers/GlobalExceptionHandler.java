@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
-import ru.tinkoff.edu.java.scrapper.exceptions.InvalidRepositoryInformation;
-import ru.tinkoff.edu.java.scrapper.exceptions.InvalidQuestionInformation;
+import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
 
-@RestControllerAdvice(
-    basePackages = "ru.tinkoff.edu.java.scrapper.web.controllers"
-)
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentTypeMismatchException.class, MethodArgumentNotValidException.class})
@@ -39,34 +36,19 @@ public class GlobalExceptionHandler {
             );
     }
 
-    @ExceptionHandler({InvalidRepositoryInformation.class})
+    @ExceptionHandler({NotExistingChat.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> handleGitHubInvalidInfo(InvalidRepositoryInformation e) {
+    public ResponseEntity<ApiErrorResponse> handleNotExistingChat(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
-            .body(
-                ApiErrorResponse.builder()
-                    .description("Проверьте еще раз, правильно ли указаны имя владельца и название репозитория")
-                    .exceptionName(e.getClass().getSimpleName())
-                    .exceptionMessage(e.getMessage())
-                    .stacktrace(null)
-                    .code(HttpStatus.NOT_FOUND.toString())
-                    .build()
-            );
-    }
-
-    @ExceptionHandler({InvalidQuestionInformation.class})
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> handleStackoverflowInfo(InvalidQuestionInformation e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
-            .body(
-                ApiErrorResponse.builder()
-                    .description("Некорректно указан id вопроса, он должен быть в цифровом формате")
-                    .exceptionName(e.getClass().getSimpleName())
-                    .exceptionMessage(e.getMessage())
-                    .stacktrace(null)
-                    .code(HttpStatus.NOT_FOUND.toString())
-                    .build()
-            );
+                .body(
+                        ApiErrorResponse.builder()
+                                .description("Проверьте еще раз, правильно ли вы указали id чата, который хотите удалить.")
+                                .exceptionName(ex.getClass().getSimpleName())
+                                .exceptionMessage(ex.getMessage())
+                                .stacktrace(null)
+                                .code(HttpStatus.NOT_FOUND.toString())
+                                .build()
+                );
     }
 
 }

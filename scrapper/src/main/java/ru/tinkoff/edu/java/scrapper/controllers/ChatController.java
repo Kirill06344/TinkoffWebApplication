@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.controllers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,11 +15,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.exceptions.InvalidQuestionInformation;
+import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
+import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/tg-chat/{id}")
+@RequiredArgsConstructor
 public class ChatController {
+
+    private final TgChatService chatService;
+
     @PostMapping
     @Operation(summary = "Зарегистрировать чат",
         responses = {
@@ -30,6 +38,7 @@ public class ChatController {
         }
     )
     public ResponseEntity<Long> registerChat(@PathVariable("id") Long id) {
+        chatService.register(id);
         log.info("User with id {} successfully registered", id);
         return ResponseEntity.ok(id);
     }
@@ -46,8 +55,12 @@ public class ChatController {
                     mediaType = MediaType.APPLICATION_JSON_VALUE))
         }
     )
-    public ResponseEntity<String> deleteChat(@PathVariable("id") Long id) {
-        return ResponseEntity.ok("Чат успешно удален");
+    public ResponseEntity<Long> deleteChat(@PathVariable("id") Long id) {
+        if (chatService.unregister(id) == 0) {
+            throw new NotExistingChat(id);
+        }
+        log.info("User with id {} successfully unregistered", id);
+        return ResponseEntity.ok(id);
     }
 
 }
