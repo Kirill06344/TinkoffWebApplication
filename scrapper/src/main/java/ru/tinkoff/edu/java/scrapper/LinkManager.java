@@ -11,6 +11,8 @@ import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
 import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Component
@@ -42,6 +44,14 @@ public class LinkManager {
         return stackOverflowService.getQuestionInfo(result.id());
     }
 
+    public LocalDateTime getUpdatedTime(UrlResult result) {
+        if (result instanceof GitHubResult) {
+            return getGitHubRepositoryInformation((GitHubResult) result).get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+        } else {
+            return getStackOverflowQuestionInformation((StackOverflowResult) result).get().lastActivityDate().toLocalDateTime();
+        }
+    }
+
     private boolean isExistingGitHubLink(GitHubResult result) {
         return gitHubService.getRepositoryInfo(result.name(), result.repository()).isPresent();
     }
@@ -49,5 +59,6 @@ public class LinkManager {
     private boolean isExistingStackoverflowLink(StackOverflowResult result) {
         return stackOverflowService.getQuestionInfo(result.id()).isPresent();
     }
+
 
 }
