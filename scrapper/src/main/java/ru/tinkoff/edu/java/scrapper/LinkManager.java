@@ -46,9 +46,15 @@ public class LinkManager {
 
     public LocalDateTime getUpdatedTime(UrlResult result) {
         if (result instanceof GitHubResult) {
-            return getGitHubRepositoryInformation((GitHubResult) result).get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+            return getGitHubRepositoryInformation((GitHubResult) result).get()
+                    .pushedAt()
+                    .atZoneSameInstant(ZoneId.systemDefault())
+                    .toLocalDateTime();
         } else {
-            return getStackOverflowQuestionInformation((StackOverflowResult) result).get().lastActivityDate().toLocalDateTime();
+            return getStackOverflowQuestionInformation((StackOverflowResult) result).get()
+                    .lastActivityDate()
+                    .atZoneSameInstant(ZoneId.systemDefault())
+                    .toLocalDateTime();
         }
     }
 

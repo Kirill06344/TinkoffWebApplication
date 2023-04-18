@@ -28,7 +28,7 @@ public class JdbcLinkRepository implements LinkRepository {
     private static final String SQL_UPDATE_UPDATED_AT_TIME = "update link set updated_at = ? where id = ?";
 
     private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
-            "extract(epoch from ? - link.checked_at) / 60 > 10";
+            "extract(epoch from ? - link.checked_at) / 60 > 1";
 
     private static final String SQL_FIND_LINK_BY_URL = "select * from link where url = ?";
 
