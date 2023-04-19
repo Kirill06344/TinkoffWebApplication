@@ -26,11 +26,23 @@
             <version>3.18.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-postgres-extensions</artifactId>
+            <version>3.18.3</version>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.jooq/jooq-meta-extensions-liquibase -->
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-meta-extensions-liquibase</artifactId>
+            <version>3.18.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta</artifactId>
             <version>3.18.3</version>
         </dependency>
 
