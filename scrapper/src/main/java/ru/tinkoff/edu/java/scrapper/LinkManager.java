@@ -44,20 +44,6 @@ public class LinkManager {
         return stackOverflowService.getQuestionInfo(result.id());
     }
 
-    public LocalDateTime getUpdatedTime(UrlResult result) {
-        if (result instanceof GitHubResult) {
-            return getGitHubRepositoryInformation((GitHubResult) result).get()
-                    .pushedAt()
-                    .atZoneSameInstant(ZoneId.systemDefault())
-                    .toLocalDateTime();
-        } else {
-            return getStackOverflowQuestionInformation((StackOverflowResult) result).get()
-                    .lastActivityDate()
-                    .atZoneSameInstant(ZoneId.systemDefault())
-                    .toLocalDateTime();
-        }
-    }
-
     private boolean isExistingGitHubLink(GitHubResult result) {
         return gitHubService.getRepositoryInfo(result.name(), result.repository()).isPresent();
     }

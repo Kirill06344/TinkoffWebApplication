@@ -23,13 +23,13 @@ public class JdbcLinkService implements LinkService {
     private final JdbcChatLinkRepository chatLinkRepository;
 
     @Override
-    public Link add(long tgChatId, URI url, LocalDateTime updatedAt) {
-        var link = linkRepository.add(new Link().setUrl(url.toString()).setCheckedAt(LocalDateTime.now()).setUpdatedAt(updatedAt));
-        if (link.isPresent()) {
-            chatLinkRepository.add(new ChatLink(tgChatId, link.get().getId()));
-            return link.get();
+    public Link add(long tgChatId, Link link) {
+        var response = linkRepository.add(link);
+        if (response.isPresent()) {
+            chatLinkRepository.add(new ChatLink(tgChatId, response.get().getId()));
+            return response.get();
         }
-        return link.get();
+        return response.get();
     }
 
     @Override

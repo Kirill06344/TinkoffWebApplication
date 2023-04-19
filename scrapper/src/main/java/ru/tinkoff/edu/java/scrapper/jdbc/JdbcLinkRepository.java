@@ -3,6 +3,7 @@ package ru.tinkoff.edu.java.scrapper.jdbc;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import ru.tinkoff.edu.java.scrapper.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,12 +21,13 @@ import java.util.Optional;
 public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SQL_ADD_LINK =
-            "insert into link(url, checked_at, updated_at) values(?, ?, ?) " +
-                    "on conflict do nothing returning id,url,checked_at, updated_at";
+            "insert into link(url, checked_at, updated_at, intr_count) values(?, ?, ?, ?) " +
+                    "on conflict do nothing returning id, url, checked_at, updated_at, intr_count";
 
     private static final String SQL_UPDATE_CHECKED_AT_TIME = "update link set checked_at = ? where id = ?";
 
-    private static final String SQL_UPDATE_UPDATED_AT_TIME = "update link set updated_at = ? where id = ? returning updated_at";
+    private static final String SQL_UPDATE_DATA = "update link set updated_at = ?, intr_count = ? " +
+            "where id = ? returning id, url, checked_at, updated_at, intr_count";
 
     private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
             "extract(epoch from ? - link.checked_at) / 60 > 1";
@@ -54,7 +56,9 @@ public class JdbcLinkRepository implements LinkRepository {
                     linkMapper,
                     entity.getUrl(),
                     LocalDateTime.now(),
-                    entity.getUpdatedAt());
+                    entity.getUpdatedAt(),
+                    entity.getIntersectingCountField()
+            );
 
             return Optional.ofNullable(res);
         } catch (DataAccessException ex) {
@@ -109,13 +113,25 @@ public class JdbcLinkRepository implements LinkRepository {
     }
 
     @Override
-    public int updateUpdatedAtTime(long id, LocalDateTime updatedAt) {
+    public DataChangeState updateOtherData(long id, LocalDateTime updatedAt, long count) {
         var link = findLinkById(id);
         if (link.isEmpty()){
-            return 0;
+            return DataChangeState.NOTHING;
         }
+        Link newData = jdbcTemplate.queryForObject(SQL_UPDATE_DATA, linkMapper, updatedAt, count, id);
+
         LocalDateTime prevDate = link.get().getUpdatedAt();
-        LocalDateTime nextDate = jdbcTemplate.queryForObject(SQL_UPDATE_UPDATED_AT_TIME, LocalDateTime.class, updatedAt, id);
-        return prevDate.equals(nextDate) ? 0 : 1;
+        LocalDateTime nextDate = newData.getUpdatedAt();
+
+        long prevCount = link.get().getIntersectingCountField();
+        long nextCount = newData.getIntersectingCountField();
+
+        if (prevCount < nextCount) {
+            return DataChangeState.COUNT;
+        } else if (!prevDate.equals(nextDate)) {
+            return DataChangeState.OTHER;
+        } else {
+            return DataChangeState.NOTHING;
+        }
     }
 }

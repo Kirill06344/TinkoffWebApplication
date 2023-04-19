@@ -18,13 +18,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
+import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
+import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.LinkManager;
 import ru.tinkoff.edu.java.scrapper.dto.*;
+import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -73,15 +77,21 @@ public class LinkController {
             return ResponseEntity.badRequest().body(new LinkResponse(0L, request.link()));
         }
 
-        try {
-            LocalDateTime updatedAt = manager.getUpdatedTime(result.get());
-            URI uri = new URI(request.link());
-            var link = linkService.add(tgChatId, uri, updatedAt);
-            return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
-        } catch (URISyntaxException ex) {
-            log.info("URI exception!");
-            return ResponseEntity.badRequest().body(null);
+        UrlResult parseResult = result.get();
+        LocalDateTime updatedAt;
+        long count;
+        if (parseResult instanceof GitHubResult) {
+            var data = manager.getGitHubRepositoryInformation((GitHubResult) parseResult);
+            updatedAt = data.get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+            count = data.get().openIssues();
+        } else {
+            var data = manager.getStackOverflowQuestionInformation((StackOverflowResult) parseResult);
+            updatedAt = data.get().lastActivityDate().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+            count = data.get().answerCount();
         }
+
+        var link = linkService.add(tgChatId, new Link().setUrl(request.link()).setUpdatedAt(updatedAt).setIntersectingCountField(count));
+        return ResponseEntity.ok(new LinkResponse(link.getId(), link.getUrl()));
     }
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -99,7 +109,7 @@ public class LinkController {
             }
     )
     public ResponseEntity<LinkResponse> deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
-                                   @Valid @RequestBody RemoveLinkRequest request) {
+                                                   @Valid @RequestBody RemoveLinkRequest request) {
         try {
             URI uri = new URI(request.link());
             var link = linkService.remove(tgChatId, uri);
