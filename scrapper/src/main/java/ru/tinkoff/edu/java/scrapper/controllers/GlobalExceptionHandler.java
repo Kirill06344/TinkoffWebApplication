@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
+import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
+import ru.tinkoff.edu.java.scrapper.exceptions.NotTrackedLink;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,15 +40,45 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({NotExistingChat.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiErrorResponse> handleNotExistingChat(Exception ex) {
+    public ResponseEntity<ApiErrorResponse> handleNotExistingChat(NotExistingChat ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
                 .body(
                         ApiErrorResponse.builder()
-                                .description("Проверьте еще раз, правильно ли вы указали id чата, который хотите удалить.")
+                                .description("Удаление чата с указанным id невозможно.")
                                 .exceptionName(ex.getClass().getSimpleName())
                                 .exceptionMessage(ex.getMessage())
                                 .stacktrace(null)
                                 .code(HttpStatus.NOT_FOUND.toString())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler({InvalidLink.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> handleInvalidLink(InvalidLink ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
+                .body(
+                        ApiErrorResponse.builder()
+                                .description("Невозможно отслеживать данную ссылку!")
+                                .exceptionName(ex.getClass().getSimpleName())
+                                .exceptionMessage(ex.getMessage())
+                                .stacktrace(null)
+                                .code(HttpStatus.BAD_REQUEST.toString())
+                                .build()
+                );
+    }
+
+    @ExceptionHandler({NotTrackedLink.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiErrorResponse> handleNotTrackedLink(NotTrackedLink ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
+                .body(
+                        ApiErrorResponse.builder()
+                                .description("Вы итак не отслеживаете данную ссылку!")
+                                .exceptionName(ex.getClass().getSimpleName())
+                                .exceptionMessage(ex.getMessage())
+                                .stacktrace(null)
+                                .code(HttpStatus.BAD_REQUEST.toString())
                                 .build()
                 );
     }

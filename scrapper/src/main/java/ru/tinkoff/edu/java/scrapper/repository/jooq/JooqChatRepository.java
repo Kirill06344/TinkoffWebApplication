@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.jooq;
+package ru.tinkoff.edu.java.scrapper.repository.jooq;
 
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

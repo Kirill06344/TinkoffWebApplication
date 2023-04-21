@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface LinkService {
     Link add(long tgChatId, Link link);
-    Optional<Link> remove(long tgChatId, URI url);
+    Link remove(long tgChatId, URI url);
     List<Link> listAll(long tgChatId);
 }

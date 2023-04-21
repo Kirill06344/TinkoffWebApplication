@@ -1,16 +1,15 @@
-package ru.tinkoff.edu.java.scrapper.jdbc;
+package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import ru.tinkoff.edu.java.scrapper.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
-import ru.tinkoff.edu.java.scrapper.repository.mappers.LinkRowMapper;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +42,12 @@ public class JdbcLinkRepository implements LinkRepository {
     private static final String SQL_DELETE_LINK_BY_URL = "delete from link where url = ?";
 
     private final JdbcTemplate jdbcTemplate;
-    private final LinkRowMapper linkMapper;
+    private final RowMapper<Link> linkMapper = (rs, rowNum) -> new Link()
+            .setId(rs.getLong("id"))
+            .setUrl(rs.getString("url"))
+            .setCheckedAt(rs.getObject("checked_at", LocalDateTime.class))
+            .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class))
+            .setIntersectingCountField(rs.getLong("intr_count"));
 
     @Override
     public Optional<Link> add(Link entity) {

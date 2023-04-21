@@ -1,18 +1,19 @@
-package ru.tinkoff.edu.java.scrapper.jdbc;
+package ru.tinkoff.edu.java.scrapper.repository.jdbc;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
-import ru.tinkoff.edu.java.scrapper.repository.mappers.ChatRowMapper;
-
 import java.util.List;
 import java.util.Optional;
 
+@Primary
 @Repository
 @RequiredArgsConstructor
 @Slf4j
@@ -28,7 +29,7 @@ public class JdbcChatRepository implements ChatRepository {
 
 
     private final JdbcTemplate jdbcTemplate;
-    private final ChatRowMapper chatMapper;
+    private final RowMapper<Chat> chatMapper = (rs, rowNum) -> new Chat(rs.getLong("id"));
 
     @Override
     public Optional<Chat> add(Chat entity) {
