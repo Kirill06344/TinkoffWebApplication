@@ -9,6 +9,8 @@ public record GitHubResponse(
     @JsonProperty("full_name")
     String fullName,
     @JsonProperty("pushed_at")
-    OffsetDateTime pushedAt
+    OffsetDateTime pushedAt,
+    @JsonProperty("open_issues_count")
+    Long openIssues
 ) {
 }

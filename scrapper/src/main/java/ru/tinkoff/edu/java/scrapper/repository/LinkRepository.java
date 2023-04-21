@@ -1,4 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.repository;
+import ru.tinkoff.edu.java.scrapper.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 
 import java.time.LocalDateTime;
@@ -15,5 +16,5 @@ public interface LinkRepository extends Repository<Link, Long> {
 
     void updateCheckedAtTime(long id);
 
-    int updateUpdatedAtTime(long id, LocalDateTime updatedAt);
+    DataChangeState updateOtherData(long id, LocalDateTime updatedAt, long count);
 }

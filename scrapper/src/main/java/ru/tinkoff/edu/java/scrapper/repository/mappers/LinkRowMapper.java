@@ -17,6 +17,7 @@ public class LinkRowMapper implements RowMapper<Link> {
                 .setId(rs.getLong("id"))
                 .setUrl(rs.getString("url"))
                 .setCheckedAt(rs.getObject("checked_at", LocalDateTime.class))
-                .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class));
+                .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class))
+                .setIntersectingCountField(rs.getLong("intr_count"));
     }
 }

@@ -16,4 +16,5 @@ public class Link {
     private String url;
     private LocalDateTime checkedAt;
     private LocalDateTime updatedAt;
+    private Long intersectingCountField;
 }

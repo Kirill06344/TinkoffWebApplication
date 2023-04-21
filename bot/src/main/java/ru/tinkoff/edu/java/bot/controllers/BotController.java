@@ -33,7 +33,9 @@ public class BotController {
     public ResponseEntity<String> updateLink(@Valid @RequestBody LinkUpdateRequest request) {
         for (long id : request.tgChatIds()) {
             log.info(String.valueOf(id));
-            bot.execute(sender.send(id, "responses/update_link.mustache", Map.of("link", request.url())));
+            bot.execute(sender.send(id, "responses/update_link.mustache",
+                    Map.of("msg", request.description(),
+                    "link", request.url())));
         }
         return ResponseEntity.ok("Updates received!");
     }
