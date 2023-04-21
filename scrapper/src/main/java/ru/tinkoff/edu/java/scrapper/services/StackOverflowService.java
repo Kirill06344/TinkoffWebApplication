@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.clients.StackOverflowClient;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 
+import java.util.Optional;
+
 @Service
 public class StackOverflowService {
     private final StackOverflowClient client;
@@ -13,7 +15,7 @@ public class StackOverflowService {
         this.client = client;
     }
 
-    public StackOverflowResponse getQuestionInfo(String id) {
+    public Optional<StackOverflowResponse> getQuestionInfo(String id) {
         return client.fetchQuestionInfo(id);
     }
 }

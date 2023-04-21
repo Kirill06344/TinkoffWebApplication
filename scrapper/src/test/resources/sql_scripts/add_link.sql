@@ -1,0 +1,1 @@
+INSERT INTO link(url) values ('https://stackoverflow.com/questions/22234')

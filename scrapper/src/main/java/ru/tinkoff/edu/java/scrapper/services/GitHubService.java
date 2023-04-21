@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.clients.GitHubClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 
+import java.util.Optional;
+
 @Service
 public class GitHubService {
 
@@ -14,7 +16,7 @@ public class GitHubService {
         this.client = client;
     }
 
-    public GitHubResponse getRepositoryInfo(String owner, String repos) {
+    public Optional<GitHubResponse> getRepositoryInfo(String owner, String repos) {
         return client.fetchRepositoryInfo(owner, repos);
     }
 

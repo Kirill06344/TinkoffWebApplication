@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.clients;
 
-import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -23,29 +23,29 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     }
 
     @Override
-    public StackOverflowResponse fetchQuestionInfo(String id) {
-        StackOverflowQuestions response = client.get()
-            .uri(uriBuilder -> uriBuilder
-                .path("/questions/{ids}")
-                .queryParam("site", STACKOVERFLOW_SITE)
-                .build(id))
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(StackOverflowQuestions.class)
-            .block();
+    public Optional<StackOverflowResponse> fetchQuestionInfo(String id) {
+        Optional<StackOverflowQuestions> response = client.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/questions/{ids}")
+                        .queryParam("site", STACKOVERFLOW_SITE)
+                        .build(id))
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(StackOverflowQuestions.class)
+                .onErrorResume(error -> Mono.empty())
+                .blockOptional();
 
-        return response.questions().isEmpty() ? new StackOverflowResponse(0, OffsetDateTime.MIN)
-            : response.questions().get(0);
+        return response.map(stackOverflowQuestions -> stackOverflowQuestions.questions().get(0));
     }
 
     protected WebClient setUpWebClient(String baseUrl) {
         ExchangeFilterFunction errorResponseFilter = ExchangeFilterFunction
-            .ofResponseProcessor(this::exchangeFilterResponseProcessor);
+                .ofResponseProcessor(this::exchangeFilterResponseProcessor);
 
         return WebClient.builder()
-            .baseUrl(baseUrl)
-            .filter(errorResponseFilter)
-            .build();
+                .baseUrl(baseUrl)
+                .filter(errorResponseFilter)
+                .build();
     }
 
     protected Mono<ClientResponse> exchangeFilterResponseProcessor(ClientResponse response) {

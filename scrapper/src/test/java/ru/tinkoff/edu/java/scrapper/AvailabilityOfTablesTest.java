@@ -1,4 +1,7 @@
+package ru.tinkoff.edu.java.scrapper;
+
 import org.junit.Test;
+import ru.tinkoff.edu.java.scrapper.environment.IntegrationEnvironment;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

@@ -7,8 +7,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui
 
+bot:
+  host: http://localhost:8082/
+
 stackoverflow:
   url: https://api.stackexchange.com/2.3
 
 github:
   url: https://api.github.com
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/scrapper
+    password: password
+    username: postgres

@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.tinkoff.edu.java.bot.UpdateListenerImpl;
+import ru.tinkoff.edu.java.bot.UpdateHandler;
 import ru.tinkoff.edu.java.bot.messages.UserMessageProcessorImpl;
 
 
@@ -22,7 +22,7 @@ public class TelegramBotConfiguration {
     @Bean
     TelegramBot telegramBot() {
         TelegramBot bot = new TelegramBot(properties.getToken());
-        UpdateListenerImpl servlet = new UpdateListenerImpl(bot, messageProcessor);
+        UpdateHandler servlet = new UpdateHandler(bot, messageProcessor);
         bot.setUpdatesListener(servlet);
         bot.execute(new SetMyCommands(messageProcessor.botCommands()));
         return bot;
