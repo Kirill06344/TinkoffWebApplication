@@ -54,7 +54,8 @@ public class JooqChatLinkRepository implements ChatLinkRepository {
 
     @Override
     public Optional<ChatLink> findChatLink(ChatLink entity) {
-        context.select().from(CHAT_LINK).where(CHAT_LINK.LINK_ID.eq(entity.getLinkId())).and(CHAT_LINK.CHAT_ID.eq(entity.getChatId()))
+        return Optional.empty();
+        //context.select().from(CHAT_LINK).where(CHAT_LINK.LINK_ID.eq(entity.getLinkId())).and(CHAT_LINK.CHAT_ID.eq(entity.getChatId()))
     }
 
     @Override
