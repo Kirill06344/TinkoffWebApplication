@@ -7,29 +7,28 @@ import org.jooq.Record;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT;
 
+@Primary
 @Repository
 public class JooqChatRepository implements ChatRepository {
 
-    private final DataSource dataSource;
 
     private final DSLContext context;
 
     @Autowired
-    public JooqChatRepository(DataSource dataSource) throws SQLException {
-        this.dataSource = dataSource;
-        context = DSL.using(dataSource.getConnection(), SQLDialect.POSTGRES);
+    public JooqChatRepository(DSLContext context) {
+        this.context = context;
     }
 
 
@@ -41,8 +40,8 @@ public class JooqChatRepository implements ChatRepository {
 
     @Override
     public Optional<Chat> add(Chat entity) {
-        Record record = context.insertInto(CHAT, CHAT.ID).values(entity.getId()).returning(CHAT.ID).fetchOne();
-        return (record == null || record.get(CHAT.ID) == null) ? Optional.empty()
+        Record record = context.insertInto(CHAT, CHAT.ID).values(entity.getId()).onDuplicateKeyIgnore().returning(CHAT.ID).fetchOne();
+        return (record == null || record.get(CHAT.ID) == null) ? findChatById(entity.getId())
                 : Optional.of(new Chat(record.get(CHAT.ID)));
     }
 

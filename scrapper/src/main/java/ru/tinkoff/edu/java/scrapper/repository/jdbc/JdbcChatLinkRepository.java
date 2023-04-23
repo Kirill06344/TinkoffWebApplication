@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Primary
+//@Primary
 @RequiredArgsConstructor
 public class JdbcChatLinkRepository implements ChatLinkRepository {
 

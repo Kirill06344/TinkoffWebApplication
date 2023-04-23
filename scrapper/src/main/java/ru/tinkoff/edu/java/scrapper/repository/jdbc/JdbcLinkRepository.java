@@ -107,7 +107,6 @@ public class JdbcLinkRepository implements LinkRepository {
 
     @Override
     public List<Link> findAllOldLinks() {
-        log.info(LocalDateTime.now().toString());
         return jdbcTemplate.query(SQL_FIND_ALL_OLD_LINKS, linkMapper, LocalDateTime.now());
     }
 

@@ -29,7 +29,7 @@ public class ChatController {
     @PostMapping
     @Operation(summary = "Зарегистрировать чат",
         responses = {
-            @ApiResponse(responseCode = "200", description = "Чат зарегестрирован"),
+            @ApiResponse(responseCode = "200", description = "Чат зарегистрирован"),
             @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
                 content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
                     mediaType = MediaType.APPLICATION_JSON_VALUE)
