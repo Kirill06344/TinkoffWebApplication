@@ -52,7 +52,7 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public List<Link> findAllOldLinks() {
         Result<LinkRecord> result = context.selectFrom(LINK)
-                .where(minute(currentLocalDateTime().minus(LINK.CHECKED_AT)).gt(1))
+                .where(minute(currentLocalDateTime().minus(LINK.CHECKED_AT)).ge(1))
                 .fetch();
         return convertResultToList(result);
     }
@@ -133,7 +133,6 @@ public class JooqLinkRepository implements LinkRepository {
                 links.add(convertLinkRecordToLink(l));
             }
         }
-        links.forEach(l -> log.info(l.getId() + " " + l.getUrl()));
         return links;
     }
 }
