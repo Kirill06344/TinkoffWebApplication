@@ -1,5 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.repository.jooq;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.LINK;
 
 @Repository
 @Primary
+@Slf4j
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
@@ -131,6 +133,7 @@ public class JooqLinkRepository implements LinkRepository {
                 links.add(convertLinkRecordToLink(l));
             }
         }
+        links.forEach(l -> log.info(l.getId() + " " + l.getUrl()));
         return links;
     }
 }
