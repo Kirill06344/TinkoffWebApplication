@@ -1,10 +1,9 @@
-package ru.tinkoff.edu.java.scrapper.entity;
+package ru.tinkoff.edu.java.scrapper.model;
 
 import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 
 @Getter
 @Setter

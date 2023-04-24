@@ -12,8 +12,8 @@ import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
-import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.model.ChatLink;
+import ru.tinkoff.edu.java.scrapper.model.Link;
 import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 

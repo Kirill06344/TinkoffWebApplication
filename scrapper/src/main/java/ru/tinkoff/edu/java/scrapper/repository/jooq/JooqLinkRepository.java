@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.records.LinkRecord;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.model.Link;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 
 import java.time.LocalDateTime;

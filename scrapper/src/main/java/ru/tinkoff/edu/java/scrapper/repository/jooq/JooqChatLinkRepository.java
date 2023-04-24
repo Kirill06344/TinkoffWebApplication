@@ -1,20 +1,14 @@
 package ru.tinkoff.edu.java.scrapper.repository.jooq;
 
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Result;
-import org.jooq.SQLDialect;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
-import ru.tinkoff.edu.java.scrapper.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
+import ru.tinkoff.edu.java.scrapper.model.ChatLink;
 import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,5 @@
 package ru.tinkoff.edu.java.scrapper.repository;
 
-import ru.tinkoff.edu.java.scrapper.entity.Link;
-
 import java.util.List;
 import java.util.Optional;
 

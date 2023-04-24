@@ -1,6 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.repository;
 
-import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
+import ru.tinkoff.edu.java.scrapper.model.ChatLink;
 
 import java.util.List;
 import java.util.Optional;

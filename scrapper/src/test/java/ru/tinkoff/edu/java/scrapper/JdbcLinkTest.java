@@ -8,7 +8,7 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.model.Link;
 import ru.tinkoff.edu.java.scrapper.environment.IntegrationEnvironment;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 

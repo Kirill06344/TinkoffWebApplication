@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.entity;
+package ru.tinkoff.edu.java.scrapper.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

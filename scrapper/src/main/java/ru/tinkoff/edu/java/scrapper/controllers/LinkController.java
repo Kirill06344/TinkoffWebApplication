@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.dto.*;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.model.Link;
 import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
 
 import java.net.URI;
