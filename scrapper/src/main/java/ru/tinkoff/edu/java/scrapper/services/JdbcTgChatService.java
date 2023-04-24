@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.java.scrapper.model.Chat;
+import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 
 @Service

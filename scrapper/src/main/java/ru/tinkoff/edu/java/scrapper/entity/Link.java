@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.model;
+package ru.tinkoff.edu.java.scrapper.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;
