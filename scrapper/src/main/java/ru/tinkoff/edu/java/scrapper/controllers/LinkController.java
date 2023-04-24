@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
-import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.dto.*;
 import ru.tinkoff.edu.java.scrapper.model.Link;
 import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
@@ -34,8 +33,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class LinkController {
 
     private final JdbcLinkService linkService;
-
-    private final LinkManager manager;
 
     private static final String TG_HEADER = "Tg-Chat-Id";
 
