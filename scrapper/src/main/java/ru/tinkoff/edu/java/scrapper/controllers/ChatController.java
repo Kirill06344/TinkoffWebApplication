@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.scrapper.dto.ApiErrorResponse;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
+import ru.tinkoff.edu.java.scrapper.services.JpaTgChatService;
 import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 
 @Slf4j
@@ -24,7 +25,7 @@ import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final TgChatService chatService;
+    private final JpaTgChatService chatService;
 
     @PostMapping
     @Operation(summary = "Зарегистрировать чат",

@@ -21,3 +21,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/scrapper
     password: password
     username: postgres
+  jpa:
+    show-sql: true
