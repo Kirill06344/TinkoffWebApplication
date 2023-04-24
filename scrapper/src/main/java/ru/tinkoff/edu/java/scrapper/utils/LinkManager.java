@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper;
+package ru.tinkoff.edu.java.scrapper.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
