@@ -15,7 +15,7 @@ public class JdbcTgChatService implements TgChatService {
 
     @Override
     public void register(long tgChatId) {
-        repository.add(new Chat(tgChatId));
+        repository.add(new Chat().setId(tgChatId));
     }
 
     @Override

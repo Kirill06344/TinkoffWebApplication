@@ -32,14 +32,14 @@ public class JooqChatRepository implements ChatRepository {
     @Override
     public Optional<Chat> findChatById(long id) {
         Result<Record> result =  context.select().from(CHAT).where(CHAT.ID.eq(id)).fetch();
-        return result.isEmpty() ? Optional.empty() : Optional.of(new Chat(result.get(0).getValue(CHAT.ID)));
+        return result.isEmpty() ? Optional.empty() : Optional.of(new Chat().setId(result.get(0).getValue(CHAT.ID)));
     }
 
     @Override
     public Optional<Chat> add(Chat entity) {
         Record record = context.insertInto(CHAT, CHAT.ID).values(entity.getId()).onDuplicateKeyIgnore().returning(CHAT.ID).fetchOne();
         return (record == null || record.get(CHAT.ID) == null) ? findChatById(entity.getId())
-                : Optional.of(new Chat(record.get(CHAT.ID)));
+                : Optional.of(new Chat().setId(record.get(CHAT.ID)));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class JooqChatRepository implements ChatRepository {
         Result<Record> result =  context.select().from(CHAT).fetch();
         List<Chat> chats = new ArrayList<>();
         for (Record r : result) {
-            chats.add(new Chat(r.getValue(CHAT.ID)));
+            chats.add(new Chat().setId(r.getValue(CHAT.ID)));
         }
         return chats;
     }

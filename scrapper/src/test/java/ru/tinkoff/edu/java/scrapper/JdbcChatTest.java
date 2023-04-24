@@ -56,7 +56,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void should_addChat() {
-        var res = repository.add(new Chat(TEST_CHAT_ID));
+        var res = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(res).isNotEmpty();
         assertEquals(TEST_CHAT_ID, res.get().getId());
     }
@@ -65,8 +65,8 @@ public class JdbcChatTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void should_returnExistingEntityIfDuplicate() {
-        var first = repository.add(new Chat(TEST_CHAT_ID));
-        var second = repository.add(new Chat(TEST_CHAT_ID));
+        var first = repository.add(new Chat().setId(TEST_CHAT_ID));
+        var second = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(first).isNotEmpty();
         assertThat(second).isNotEmpty();
         assertEquals(first.get().getId(), second.get().getId());
@@ -76,7 +76,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
     @Transactional
     @Rollback
     void should_deleteByIdCorrectly() {
-        var entity = repository.add(new Chat(TEST_CHAT_ID));
+        var entity = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(entity).isNotEmpty();
         repository.deleteById(entity.get().getId());
         assertTrue(repository.findChatById(TEST_CHAT_ID).isEmpty());
@@ -93,7 +93,7 @@ public class JdbcChatTest extends IntegrationEnvironment {
         assertTrue(repository.findChatById(id).isEmpty());
         var chats = repository.findAll();
         assertEquals(2, chats.size());
-        assertFalse(chats.contains(new Chat(123L)));
+        assertFalse(chats.contains(new Chat().setId(123L)));
     }
 
     @Test
