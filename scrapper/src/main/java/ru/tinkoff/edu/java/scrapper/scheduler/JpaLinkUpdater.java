@@ -63,13 +63,15 @@ public class JpaLinkUpdater implements LinkUpdater{
 
     //Добавить исключение вместо InvalidLink
     private void sendIfItUpdated(Link link, OffsetDateTime date, long count, boolean isGit) {
+        Link oldLink = linkRepository.findById(link.getId()).orElseThrow(() -> new InvalidLink(link.getUrl()));
         link.setUpdatedAt(ConverterToDateTime.convertOffset(date)).setIntersectingCountField(count);
         linkRepository.save(link);
-        Link updatedLink = linkRepository.findById(link.getId()).orElseThrow(() -> new InvalidLink(link.getUrl()));
+        Link newLink = linkRepository.findById(link.getId()).orElseThrow(() -> new InvalidLink(link.getUrl()));
 
-        DataChangeState state = compareLinks(link, updatedLink);
+        DataChangeState state = compareLinks(oldLink, newLink);
         if (state != DataChangeState.NOTHING) {
-            botClient.sendUpdate(buildRequest(updatedLink, isGit
+            log.info("Send notification about update...");
+            botClient.sendUpdate(buildRequest(newLink, isGit
                     ? ServiceResponses.getGithubResponse(state.toString())
                     : ServiceResponses.getStackOverflowResponses(state.toString())
             ));

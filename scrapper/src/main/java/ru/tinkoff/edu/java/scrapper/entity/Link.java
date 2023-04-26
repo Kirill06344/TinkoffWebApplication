@@ -33,6 +33,6 @@ public class Link {
     @Column(name = "intr_count")
     private Long intersectingCountField;
 
-    @ManyToMany(mappedBy = "links")
+    @ManyToMany(mappedBy = "links", fetch = FetchType.EAGER)
     private Set<Chat> chats = new HashSet<>();
 }
