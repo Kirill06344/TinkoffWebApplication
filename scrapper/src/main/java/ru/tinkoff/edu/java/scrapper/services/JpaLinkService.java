@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
+import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
@@ -32,7 +33,9 @@ public class JpaLinkService implements LinkService {
 
     @Transactional
     @Override
-    public Link add(long tgChatId, Link link) {
+    public Link add(long tgChatId, AddLinkRequest request) {
+        UrlResult result = manager.checkLinkForExistence(request.link());
+        Link link = manager.createLinkFromUrlResult(result, request.link());
         link = linkRepository.findByUrl(link.getUrl()).orElse(link);
         Chat chat = getChatById(tgChatId);
         link.getChats().add(chat);
@@ -61,28 +64,4 @@ public class JpaLinkService implements LinkService {
         return getChatById(tgChatId).getLinks().stream().toList();
     }
 
-    public UrlResult checkLinkForExistence(String link) {
-        var result = manager.getLinkResult(link);
-        if (result.isEmpty() || !manager.isExistingLink(result.get())) {
-            throw new InvalidLink(link);
-        }
-        return result.get();
-    }
-
-    public Link createLinkFromUrlResult(UrlResult result, String link) {
-        LocalDateTime updatedAt;
-        long count;
-        if (result instanceof GitHubResult) {
-            var data = manager.getGitHubRepositoryInformation((GitHubResult) result);
-            updatedAt = data.get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-            count = data.get().openIssues();
-        } else {
-            var data = manager.getStackOverflowQuestionInformation((StackOverflowResult) result);
-            updatedAt = data.get().lastActivityDate().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-            count = data.get().answerCount();
-        }
-        return new Link().setUrl(link)
-                .setUpdatedAt(updatedAt)
-                .setIntersectingCountField(count);
-    }
 }

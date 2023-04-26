@@ -66,10 +66,8 @@ public class LinkController {
     )
     public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
                                                 @Valid @RequestBody AddLinkRequest request) {
-
-        UrlResult result = linkService.checkLinkForExistence(request.link());
-        Link link = linkService.createLinkFromUrlResult(result, request.link());
-        link = linkService.add(tgChatId, link);
+        log.info("Request to add link with url: " + request.link());
+        Link link = linkService.add(tgChatId, request);
         return new LinkResponse(link.getId(), link.getUrl());
     }
 

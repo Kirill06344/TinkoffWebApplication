@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
+import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
@@ -31,7 +32,9 @@ public class JdbcLinkService implements LinkService {
     private final LinkManager manager;
 
     @Override
-    public Link add(long tgChatId, Link link) {
+    public Link add(long tgChatId, AddLinkRequest request) {
+        UrlResult result = manager.checkLinkForExistence(request.link());
+        Link link = manager.createLinkFromUrlResult(result, request.link());
         var response = linkRepository.add(link);
         if (response.isPresent()) {
             chatLinkRepository.add(new ChatLink(tgChatId, response.get().getId()));
@@ -62,28 +65,4 @@ public class JdbcLinkService implements LinkService {
         return links;
     }
 
-    public UrlResult checkLinkForExistence(String link) {
-        var result = manager.getLinkResult(link);
-        if (result.isEmpty() || !manager.isExistingLink(result.get())) {
-            throw new InvalidLink(link);
-        }
-        return result.get();
-    }
-
-    public Link createLinkFromUrlResult(UrlResult result, String link) {
-        LocalDateTime updatedAt;
-        long count;
-        if (result instanceof GitHubResult) {
-            var data = manager.getGitHubRepositoryInformation((GitHubResult) result);
-            updatedAt = data.get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-            count = data.get().openIssues();
-        } else {
-            var data = manager.getStackOverflowQuestionInformation((StackOverflowResult) result);
-            updatedAt = data.get().lastActivityDate().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-            count = data.get().answerCount();
-        }
-        return new Link().setUrl(link)
-                .setUpdatedAt(updatedAt)
-                .setIntersectingCountField(count);
-    }
 }
