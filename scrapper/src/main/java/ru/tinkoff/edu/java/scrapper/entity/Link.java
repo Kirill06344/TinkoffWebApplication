@@ -3,7 +3,7 @@ package ru.tinkoff.edu.java.scrapper.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.Accessors;
-
+import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +23,7 @@ public class Link {
     @Column(name = "url")
     private String url;
 
+    @CreationTimestamp
     @Column(name = "checked_at")
     private LocalDateTime checkedAt;
 

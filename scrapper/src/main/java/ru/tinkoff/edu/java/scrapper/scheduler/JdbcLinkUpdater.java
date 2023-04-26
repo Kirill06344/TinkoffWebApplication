@@ -2,10 +2,14 @@ package ru.tinkoff.edu.java.scrapper.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
+import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
+import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.clients.BotClient;
@@ -14,34 +18,21 @@ import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
-import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.utils.ServiceResponses;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Map;
-
 @Service
+//@Primary
 @RequiredArgsConstructor
 @Slf4j
-public class LinkUpdaterImpl implements LinkUpdater {
+public class JdbcLinkUpdater implements LinkUpdater {
 
-    private static final Map<String, String> githubResponses = Map.of(
-            "count", "Oooooh..someone open an issue or PR at this repository...",
-            "other", "Hey! There is a new commit at this repository..."
-    );
+    private final JdbcLinkRepository linkRepository;
 
-    private static final Map<String, String> stackOverFlowResponses = Map.of(
-            "count", "Oooooh..someone left answer on this question...",
-            "other", "Hey! There is a new modification in this question..."
-    );
-
-
-    private final LinkRepository linkRepository;
-
-    private final ChatLinkRepository chatLinkRepository;
+    private final JdbcChatLinkRepository chatLinkRepository;
 
     private final LinkManager manager;
 
@@ -62,7 +53,7 @@ public class LinkUpdaterImpl implements LinkUpdater {
             }
             linkRepository.updateCheckedAtTime(link.getId());
         }
-        return 0;
+        return oldLinks.size();
     }
 
     private LinkUpdateRequest buildRequest(Link link, String description) {
@@ -74,14 +65,13 @@ public class LinkUpdaterImpl implements LinkUpdater {
     }
 
     private void sendIfItUpdated(Link link, OffsetDateTime date, long count, boolean isGit) {
-        var state = linkRepository.updateOtherData(link.getId(), convertOffset(date), count);
+        var state = linkRepository.updateOtherData(link.getId(), ConverterToDateTime.convertOffset(date), count);
         if (state == DataChangeState.NOTHING) {
             return;
         }
-        botClient.sendUpdate(buildRequest(link, isGit ? githubResponses.get(state.toString()) : stackOverFlowResponses.get(state.toString())));
-    }
-
-    private LocalDateTime convertOffset(OffsetDateTime time) {
-        return time.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+        botClient.sendUpdate(buildRequest(link, isGit
+                ? ServiceResponses.getGithubResponse(state.toString())
+                : ServiceResponses.getStackOverflowResponses(state.toString())
+        ));
     }
 }
