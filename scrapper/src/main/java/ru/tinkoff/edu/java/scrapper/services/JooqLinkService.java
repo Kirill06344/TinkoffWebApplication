@@ -3,13 +3,13 @@ package ru.tinkoff.edu.java.scrapper.services;
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
-import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotTrackedLink;
-import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
-import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
+import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class JdbcLinkService implements LinkService {
+public class JooqLinkService implements LinkService {
 
-    private final LinkRepository linkRepository;
+    private final JooqLinkRepository linkRepository;
 
-    private final ChatLinkRepository chatLinkRepository;
+    private final JooqChatLinkRepository chatLinkRepository;
 
     private final LinkManager manager;
 

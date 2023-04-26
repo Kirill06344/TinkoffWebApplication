@@ -2,7 +2,7 @@ app:
   test: 14
   scheduler:
     interval: PT010S
-  database-access-type: jpa
+  database-access-type: jooq
 
 springdoc:
   swagger-ui:

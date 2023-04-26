@@ -5,28 +5,28 @@ import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
-import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatLinkRepository;
-import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
-import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
-import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
-import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
+import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
+import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
+import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.utils.ServiceResponses;
+
 import java.time.OffsetDateTime;
 import java.util.List;
-
 @RequiredArgsConstructor
 @Slf4j
-public class JdbcLinkUpdater implements LinkUpdater {
+public class JooqLinkUpdater implements LinkUpdater {
 
-    private final JdbcLinkRepository linkRepository;
+    private final JooqLinkRepository linkRepository;
 
-    private final JdbcChatLinkRepository chatLinkRepository;
+    private final JooqChatLinkRepository chatLinkRepository;
 
     private final LinkManager manager;
 

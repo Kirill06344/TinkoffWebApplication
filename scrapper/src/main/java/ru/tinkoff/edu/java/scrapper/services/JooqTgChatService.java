@@ -2,13 +2,12 @@ package ru.tinkoff.edu.java.scrapper.services;
 
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatRepository;
-
+import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatRepository;
 
 @RequiredArgsConstructor
-public class JdbcTgChatService implements TgChatService {
+public class JooqTgChatService implements TgChatService {
 
-    private final JdbcChatRepository repository;
+    private final JooqChatRepository repository;
 
     @Override
     public void register(long tgChatId) {
