@@ -2,8 +2,6 @@ package ru.tinkoff.edu.java.scrapper.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
-import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
@@ -15,13 +13,10 @@ import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcLinkService implements LinkService {
 

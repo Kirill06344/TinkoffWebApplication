@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 
-@Service
 @RequiredArgsConstructor
 public class JpaTgChatService implements TgChatService {
 

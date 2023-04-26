@@ -16,12 +16,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import ru.tinkoff.edu.java.parser.url.results.UrlResult;
-import ru.tinkoff.edu.java.scrapper.services.JpaLinkService;
-import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
+import ru.tinkoff.edu.java.scrapper.services.LinkService;
 import ru.tinkoff.edu.java.scrapper.dto.*;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-import ru.tinkoff.edu.java.scrapper.services.JdbcLinkService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class LinkController {
 
-    private final JpaLinkService linkService;
+    private final LinkService linkService;
 
     private static final String TG_HEADER = "Tg-Chat-Id";
 

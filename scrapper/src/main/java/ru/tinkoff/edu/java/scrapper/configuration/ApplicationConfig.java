@@ -5,11 +5,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.constraints.NotNull;
+import ru.tinkoff.edu.java.scrapper.utils.AccessType;
 
 import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, Scheduler scheduler) {
+public record ApplicationConfig(@NotNull String test, Scheduler scheduler, AccessType databaseAccessType) {
     public record Scheduler(Duration interval) {}
 }

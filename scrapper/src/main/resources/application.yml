@@ -2,6 +2,7 @@ app:
   test: 14
   scheduler:
     interval: PT010S
+  database-access-type: jdbc
 
 springdoc:
   swagger-ui:

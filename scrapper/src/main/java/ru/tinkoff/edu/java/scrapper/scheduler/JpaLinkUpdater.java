@@ -28,8 +28,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
-@Service
-@Primary
+
 @RequiredArgsConstructor
 @Slf4j
 public class JpaLinkUpdater implements LinkUpdater{

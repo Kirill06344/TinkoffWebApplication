@@ -19,13 +19,9 @@ import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.utils.ServiceResponses;
-
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.List;
-@Service
-//@Primary
+
 @RequiredArgsConstructor
 @Slf4j
 public class JdbcLinkUpdater implements LinkUpdater {
