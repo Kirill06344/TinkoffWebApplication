@@ -17,6 +17,7 @@ import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,9 +34,12 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
     @Autowired
     private JpaLinkRepository linkRepository;
 
-    private final String INVALID_LINK = "test_link";
+    private static final String INVALID_LINK = "test_link";
 
-    private final String VALID_LINK = "https://github.com/Kirill06344/TinkoffWebApplication";
+    private static final String FIRST_VALID_LINK = "https://github.com/Kirill06344/TinkoffWebApplication";
+
+    private static final String SECOND_VALID_LINK = "https://github.com/Kirill06344/TinkoffWebApplication";
+
 
     @Test
     void should_throwErrorIfInvalidLink() {
@@ -50,7 +54,7 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
 
     @Test
     void should_throwErrorIfChatNotExisting() {
-        AddLinkRequest request = new AddLinkRequest(VALID_LINK);
+        AddLinkRequest request = new AddLinkRequest(FIRST_VALID_LINK);
         try {
             service.add(1L, request);
         } catch (NotExistingChat ex) {
@@ -63,15 +67,64 @@ public class JpaLinkServiceTest extends IntegrationEnvironment {
     @Rollback
     void should_addExistingLink() {
         chatRepository.save(new Chat().setId(1L));
-        AddLinkRequest request = new AddLinkRequest(VALID_LINK);
+        AddLinkRequest request = new AddLinkRequest(FIRST_VALID_LINK);
         Link link = service.add(1L, request);
         assertAll(
-                () -> assertEquals(VALID_LINK, link.getUrl()),
+                () -> assertEquals(FIRST_VALID_LINK, link.getUrl()),
                 () -> assertTrue(link.getChats().stream().anyMatch(c -> c.getId() == 1L))
         );
     }
 
+    @Test
+    @Transactional
+    @Rollback
+    void should_addLinkOnceForTrackingBySomeChats() {
+        chatRepository.save(new Chat().setId(1L));
+        chatRepository.save(new Chat().setId(2L));
+        AddLinkRequest request = new AddLinkRequest(FIRST_VALID_LINK);
+        Link link1 = service.add(1L, request);
+        Link link2 = service.add(2L, request);
+        assertEquals(link1.getId(), link2.getId());
+        assertAll(
+                () -> assertEquals(FIRST_VALID_LINK, link1.getUrl()),
+                () -> assertEquals(FIRST_VALID_LINK, link2.getUrl()),
+                () -> assertTrue(link2.getChats().stream().allMatch(c -> c.getId() == 1L || c.getId() == 2L))
+        );
+        var link = linkRepository.findById(link1.getId());
+        assertThat(link).isNotEmpty();
+        assertEquals(2, link.get().getChats().size());
+    }
 
+    @Test
+    @Transactional
+    @Rollback
+    void should_returnOneTrackingLink() {
+        chatRepository.save(new Chat().setId(1L));
+        AddLinkRequest request = new AddLinkRequest(FIRST_VALID_LINK);
+        Link link = service.add(1L, request);
+        assertAll(
+                () -> assertEquals(1, service.listAll(1L).size()),
+                () -> assertEquals(link.getUrl(), service.listAll(1L).get(0).getUrl())
+        );
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void should_returnSomeTrackingLink() {
+        chatRepository.save(new Chat().setId(1L));
+        AddLinkRequest firstRequest = new AddLinkRequest(FIRST_VALID_LINK);
+        AddLinkRequest secondRequest = new AddLinkRequest(SECOND_VALID_LINK);
+
+        Link firstLink = service.add(1L, firstRequest);
+        Link secondLink = service.add(1L, secondRequest);
+        assertAll(
+                () -> assertEquals(2, service.listAll(1L).size()),
+                () -> assertTrue(service.listAll(1L).stream().anyMatch(l -> l.getUrl().equals(firstLink.getUrl()))),
+                () -> assertTrue(service.listAll(1L).stream().anyMatch(l -> l.getUrl().equals(secondLink.getUrl()))),
+                () -> assertTrue(secondLink.getChats().stream().anyMatch(c -> c.getId() == 1L))
+        );
+    }
 
 
     @DynamicPropertySource
