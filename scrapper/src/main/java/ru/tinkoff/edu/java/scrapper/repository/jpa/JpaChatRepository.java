@@ -9,5 +9,5 @@ import ru.tinkoff.edu.java.scrapper.entity.Chat;
 public interface JpaChatRepository extends JpaRepository<Chat, Long> {
     @Modifying
     @Query("delete from Chat c where c.id = :id")
-    int deleteById(@Param("id")long id);
+    int deleteById(@Param("id") long id);
 }
