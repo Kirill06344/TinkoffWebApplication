@@ -1,40 +1,40 @@
-package ru.tinkoff.edu.java.scrapper;
+package ru.tinkoff.edu.java.scrapper.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.environment.IntegrationEnvironment;
-import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
-
+import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
-public class JdbcChatTest extends IntegrationEnvironment {
+/**
+ * Tests annotated with @DataJpaTest are transactional and roll back at the end of each test.
+ */
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class JpaChatTest extends IntegrationEnvironment {
 
     @Autowired
-    ChatRepository repository;
+    private  JpaChatRepository repository;
 
     private final long TEST_CHAT_ID = 1L;
 
     @Test
-    void should_returnEmptyIfChatDoesNotExist() {
-        var chat = repository.findChatById(TEST_CHAT_ID);
-        assertThat(chat).isEmpty();
+    void should_returnEmptyIfChatDoesNotExist(){
+        assertThat(repository.findById(TEST_CHAT_ID)).isEmpty();
     }
 
     @Test
     @Sql(value = "/sql_scripts/add_chat.sql")
-    @Transactional
-    @Rollback
     void should_returnNotEmptyIfChatExists() {
-        var chat = repository.findChatById(TEST_CHAT_ID);
+        var chat = repository.findById(TEST_CHAT_ID);
         assertThat(chat).isNotEmpty();
         assertEquals(TEST_CHAT_ID, chat.get().getId());
     }
@@ -46,59 +46,51 @@ public class JdbcChatTest extends IntegrationEnvironment {
 
     @Test
     @Sql("/sql_scripts/add_three_chats.sql")
-    @Transactional
-    @Rollback
     void should_returnThreeChats() {
         assertThat(repository.findAll().size()).isEqualTo(3);
     }
 
     @Test
-    @Transactional
-    @Rollback
     void should_addChat() {
-        var res = repository.add(new Chat(TEST_CHAT_ID));
-        assertThat(res).isNotEmpty();
-        assertEquals(TEST_CHAT_ID, res.get().getId());
+        System.out.println(repository.findAll().size());
+        var res = repository.save(new Chat().setId(TEST_CHAT_ID));
+        assertNotNull(res);
+        assertEquals(TEST_CHAT_ID, res.getId());
+        assertEquals(1, repository.findAll().size());
     }
 
     @Test
-    @Transactional
-    @Rollback
     void should_returnExistingEntityIfDuplicate() {
-        var first = repository.add(new Chat(TEST_CHAT_ID));
-        var second = repository.add(new Chat(TEST_CHAT_ID));
-        assertThat(first).isNotEmpty();
-        assertThat(second).isNotEmpty();
-        assertEquals(first.get().getId(), second.get().getId());
+        Chat first = repository.save(new Chat().setId(TEST_CHAT_ID));
+        Chat second = repository.save(new Chat().setId(TEST_CHAT_ID));
+        assertNotNull(first);
+        assertNotNull(second);
+        assertEquals(first.getId(), second.getId());
+        assertEquals(1, repository.findAll().size());
     }
 
     @Test
-    @Transactional
-    @Rollback
     void should_deleteByIdCorrectly() {
-        var entity = repository.add(new Chat(TEST_CHAT_ID));
-        assertThat(entity).isNotEmpty();
-        repository.deleteById(entity.get().getId());
-        assertTrue(repository.findChatById(TEST_CHAT_ID).isEmpty());
+        Chat chat = repository.save(new Chat().setId(TEST_CHAT_ID));
+        assertNotNull(chat);
+        assertEquals(1, repository.deleteById(TEST_CHAT_ID));
         assertEquals(0, repository.findAll().size());
     }
 
     @Test
-    @Transactional
     @Sql("/sql_scripts/add_three_chats.sql")
-    @Rollback
     void should_deleteByIdCorrectlyWithSomeRows() {
+        assertEquals(3, repository.findAll().size());
         long id = 123L;
-        repository.deleteById(id);
-        assertTrue(repository.findChatById(id).isEmpty());
+        assertEquals(1,repository.deleteById(id));
         var chats = repository.findAll();
         assertEquals(2, chats.size());
-        assertFalse(chats.contains(new Chat(123L)));
+        assertFalse(chats.contains(new Chat().setId(123L)));
     }
 
     @Test
     void should_deleteByIdFromEmptyTableWithOutExceptions() {
-        repository.deleteById(1L);
+        assertEquals(0, repository.deleteById(1L));
         assertEquals(0, repository.findAll().size());
     }
 

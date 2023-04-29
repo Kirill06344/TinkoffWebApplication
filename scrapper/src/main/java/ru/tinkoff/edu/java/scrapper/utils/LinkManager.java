@@ -8,6 +8,8 @@ import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
+import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
 import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
 
@@ -50,6 +52,31 @@ public class LinkManager {
 
     private boolean isExistingStackoverflowLink(StackOverflowResult result) {
         return stackOverflowService.getQuestionInfo(result.id()).isPresent();
+    }
+
+    public UrlResult checkLinkForExistence(String link) {
+        var result = getLinkResult(link);
+        if (result.isEmpty() || !isExistingLink(result.get())) {
+            throw new InvalidLink(link);
+        }
+        return result.get();
+    }
+
+    public Link createLinkFromUrlResult(UrlResult result, String link) {
+        LocalDateTime updatedAt;
+        long count;
+        if (result instanceof GitHubResult) {
+            var data = getGitHubRepositoryInformation((GitHubResult) result);
+            updatedAt = data.get().pushedAt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+            count = data.get().openIssues();
+        } else {
+            var data = getStackOverflowQuestionInformation((StackOverflowResult) result);
+            updatedAt = data.get().lastActivityDate().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
+            count = data.get().answerCount();
+        }
+        return new Link().setUrl(link)
+                .setUpdatedAt(updatedAt)
+                .setIntersectingCountField(count);
     }
 
 

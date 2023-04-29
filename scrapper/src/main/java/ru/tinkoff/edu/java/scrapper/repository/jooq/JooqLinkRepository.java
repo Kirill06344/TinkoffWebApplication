@@ -20,14 +20,11 @@ import static org.jooq.impl.DSL.*;
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.LINK;
 
 
-@Repository
-@Primary
 @Slf4j
 public class JooqLinkRepository implements LinkRepository {
 
     private final DSLContext context;
 
-    @Autowired
     public JooqLinkRepository(DSLContext context) {
         this.context = context;
     }

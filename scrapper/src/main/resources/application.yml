@@ -2,6 +2,7 @@ app:
   test: 14
   scheduler:
     interval: PT010S
+  database-access-type: jooq
 
 springdoc:
   swagger-ui:
@@ -21,3 +22,5 @@ spring:
     url: jdbc:postgresql://localhost:5432/scrapper
     password: password
     username: postgres
+  jpa:
+    show-sql: true

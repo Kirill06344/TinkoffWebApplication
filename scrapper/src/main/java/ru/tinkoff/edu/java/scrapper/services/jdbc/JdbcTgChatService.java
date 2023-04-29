@@ -1,13 +1,11 @@
-package ru.tinkoff.edu.java.scrapper.services;
+package ru.tinkoff.edu.java.scrapper.services.jdbc;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
+import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 
-@Service
-@Primary
+
 @RequiredArgsConstructor
 public class JdbcTgChatService implements TgChatService {
 
@@ -15,7 +13,7 @@ public class JdbcTgChatService implements TgChatService {
 
     @Override
     public void register(long tgChatId) {
-        repository.add(new Chat(tgChatId));
+        repository.add(new Chat().setId(tgChatId));
     }
 
     @Override

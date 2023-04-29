@@ -15,8 +15,6 @@ import java.util.Optional;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT_LINK;
 
-@Repository
-@Primary
 public class JooqChatLinkRepository implements ChatLinkRepository {
 
     private final DSLContext context;

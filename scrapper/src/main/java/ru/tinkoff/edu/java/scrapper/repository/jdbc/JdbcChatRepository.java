@@ -12,8 +12,6 @@ import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 import java.util.List;
 import java.util.Optional;
 
-//@Primary
-@Repository
 @RequiredArgsConstructor
 @Slf4j
 public class JdbcChatRepository implements ChatRepository {
@@ -28,7 +26,7 @@ public class JdbcChatRepository implements ChatRepository {
 
 
     private final JdbcTemplate jdbcTemplate;
-    private final RowMapper<Chat> chatMapper = (rs, rowNum) -> new Chat(rs.getLong("id"));
+    private final RowMapper<Chat> chatMapper = (rs, rowNum) -> new Chat().setId(rs.getLong("id"));
 
     @Override
     public Optional<Chat> add(Chat entity) {

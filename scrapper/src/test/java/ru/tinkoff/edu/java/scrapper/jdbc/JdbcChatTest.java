@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper;
+package ru.tinkoff.edu.java.scrapper.jdbc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,36 +8,35 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tinkoff.edu.java.scrapper.entity.Link;
+import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.environment.IntegrationEnvironment;
-import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 @SpringBootTest
-class JdbcLinkTest extends IntegrationEnvironment {
+public class JdbcChatTest extends IntegrationEnvironment {
 
     @Autowired
-    LinkRepository repository;
+    ChatRepository repository;
 
-    private final String TEST_URL = "https://stackoverflow.com/questions/22234";
+    private final long TEST_CHAT_ID = 1L;
 
     @Test
-    void should_returnEmptyIfLinkDoesNotExist() {
-        var link = repository.findLinkByUrl(TEST_URL);
-        assertThat(link).isEmpty();
+    void should_returnEmptyIfChatDoesNotExist() {
+        var chat = repository.findChatById(TEST_CHAT_ID);
+        assertThat(chat).isEmpty();
     }
 
     @Test
-    @Sql(value = "/sql_scripts/add_link.sql")
+    @Sql(value = "/sql_scripts/add_chat.sql")
     @Transactional
     @Rollback
-    void should_returnNotEmptyIfExists() {
-        var link = repository.findLinkByUrl(TEST_URL);
-        assertThat(link).isNotEmpty();
-        assertEquals(TEST_URL, link.get().getUrl());
+    void should_returnNotEmptyIfChatExists() {
+        var chat = repository.findChatById(TEST_CHAT_ID);
+        assertThat(chat).isNotEmpty();
+        assertEquals(TEST_CHAT_ID, chat.get().getId());
     }
 
     @Test
@@ -46,68 +45,60 @@ class JdbcLinkTest extends IntegrationEnvironment {
     }
 
     @Test
-    @Sql("/sql_scripts/add_three_links.sql")
+    @Sql("/sql_scripts/add_three_chats.sql")
     @Transactional
     @Rollback
-    void should_returnThreeLinks() {
+    void should_returnThreeChats() {
         assertThat(repository.findAll().size()).isEqualTo(3);
     }
 
     @Test
     @Transactional
     @Rollback
-    void should_addLink() {
-        var res = repository.add(new Link().setUrl(TEST_URL));
+    void should_addChat() {
+        var res = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(res).isNotEmpty();
-        assertEquals(TEST_URL, res.get().getUrl());
+        assertEquals(TEST_CHAT_ID, res.get().getId());
     }
 
     @Test
     @Transactional
     @Rollback
     void should_returnExistingEntityIfDuplicate() {
-        var first = repository.add(new Link().setUrl(TEST_URL));
-        var second = repository.add(new Link().setUrl(TEST_URL));
+        var first = repository.add(new Chat().setId(TEST_CHAT_ID));
+        var second = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(first).isNotEmpty();
         assertThat(second).isNotEmpty();
-        assertAll(
-                () -> assertEquals(first.get().getId(), second.get().getId()),
-                () -> assertEquals(first.get().getUrl(), second.get().getUrl())
-        );
+        assertEquals(first.get().getId(), second.get().getId());
     }
 
     @Test
     @Transactional
     @Rollback
     void should_deleteByIdCorrectly() {
-        var entity = repository.add(new Link().setUrl(TEST_URL));
+        var entity = repository.add(new Chat().setId(TEST_CHAT_ID));
         assertThat(entity).isNotEmpty();
         repository.deleteById(entity.get().getId());
-        assertTrue(repository.findLinkByUrl(TEST_URL).isEmpty());
-        assertEquals(0, repository.findAll().size());
-    }
-
-    @Test
-    void should_deleteByIdFromEmptyTableWithOutExceptions() {
-        repository.deleteById(1L);
+        assertTrue(repository.findChatById(TEST_CHAT_ID).isEmpty());
         assertEquals(0, repository.findAll().size());
     }
 
     @Test
     @Transactional
-    @Sql("/sql_scripts/add_three_links.sql")
+    @Sql("/sql_scripts/add_three_chats.sql")
     @Rollback
-    void should_deleteByUrlCorrectly() {
-        String url = "https://stackoverflow.com/questions/77454";
-        repository.deleteLinkByUrl(url);
-        assertThat(repository.findLinkByUrl(url)).isEmpty();
-        assertEquals(2, repository.findAll().size());
+    void should_deleteByIdCorrectlyWithSomeRows() {
+        long id = 123L;
+        repository.deleteById(id);
+        assertTrue(repository.findChatById(id).isEmpty());
+        var chats = repository.findAll();
+        assertEquals(2, chats.size());
+        assertFalse(chats.contains(new Chat().setId(123L)));
     }
 
     @Test
-    void should_deleteByUrlFromEmptyTableWithOutExceptions() {
-        String url = "https://stackoverflow.com/questions/77454";
-        repository.deleteLinkByUrl(url);
+    void should_deleteByIdFromEmptyTableWithOutExceptions() {
+        repository.deleteById(1L);
         assertEquals(0, repository.findAll().size());
     }
 
