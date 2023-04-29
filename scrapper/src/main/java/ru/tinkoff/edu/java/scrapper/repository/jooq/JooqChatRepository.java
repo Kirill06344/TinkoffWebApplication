@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT;
 
-@Primary
 @Repository
 public class JooqChatRepository implements ChatRepository {
 

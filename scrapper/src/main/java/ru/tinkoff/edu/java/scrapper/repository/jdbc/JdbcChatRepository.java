@@ -12,7 +12,6 @@ import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 import java.util.List;
 import java.util.Optional;
 
-//@Primary
 @Repository
 @RequiredArgsConstructor
 @Slf4j

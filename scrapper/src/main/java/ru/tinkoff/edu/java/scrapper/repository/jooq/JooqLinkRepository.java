@@ -21,7 +21,6 @@ import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.LINK;
 
 
 @Repository
-@Primary
 @Slf4j
 public class JooqLinkRepository implements LinkRepository {
 

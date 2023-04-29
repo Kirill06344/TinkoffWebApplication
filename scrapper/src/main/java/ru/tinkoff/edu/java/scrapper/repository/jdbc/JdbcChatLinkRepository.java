@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-//@Primary
 @RequiredArgsConstructor
 public class JdbcChatLinkRepository implements ChatLinkRepository {
 
