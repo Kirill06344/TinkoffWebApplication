@@ -1,8 +1,9 @@
-package ru.tinkoff.edu.java.scrapper.services;
+package ru.tinkoff.edu.java.scrapper.services.jpa;
 
 import lombok.RequiredArgsConstructor;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
+import ru.tinkoff.edu.java.scrapper.services.TgChatService;
 
 @RequiredArgsConstructor
 public class JpaTgChatService implements TgChatService {

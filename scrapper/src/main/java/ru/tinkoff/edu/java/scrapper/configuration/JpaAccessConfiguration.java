@@ -9,6 +9,8 @@ import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.scheduler.JpaLinkUpdater;
 import ru.tinkoff.edu.java.scrapper.scheduler.LinkUpdater;
 import ru.tinkoff.edu.java.scrapper.services.*;
+import ru.tinkoff.edu.java.scrapper.services.jpa.JpaLinkService;
+import ru.tinkoff.edu.java.scrapper.services.jpa.JpaTgChatService;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 
 @Configuration

@@ -1,4 +1,4 @@
-package ru.tinkoff.edu.java.scrapper.services;
+package ru.tinkoff.edu.java.scrapper.services.jpa;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import ru.tinkoff.edu.java.scrapper.exceptions.NotExistingChat;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotTrackedLink;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
+import ru.tinkoff.edu.java.scrapper.services.LinkService;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import java.net.URI;
 import java.util.List;

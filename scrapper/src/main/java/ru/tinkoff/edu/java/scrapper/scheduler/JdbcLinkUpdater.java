@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
-import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatLinkRepository;
-import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
+import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
@@ -24,9 +24,9 @@ import java.util.List;
 @Slf4j
 public class JdbcLinkUpdater implements LinkUpdater {
 
-    private final JdbcLinkRepository linkRepository;
+    private final LinkRepository linkRepository;
 
-    private final JdbcChatLinkRepository chatLinkRepository;
+    private final ChatLinkRepository chatLinkRepository;
 
     private final LinkManager manager;
 
