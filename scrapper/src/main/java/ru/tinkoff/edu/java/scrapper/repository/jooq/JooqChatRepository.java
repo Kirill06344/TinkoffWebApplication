@@ -16,13 +16,11 @@ import java.util.Optional;
 
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.CHAT;
 
-@Repository
 public class JooqChatRepository implements ChatRepository {
 
 
     private final DSLContext context;
 
-    @Autowired
     public JooqChatRepository(DSLContext context) {
         this.context = context;
     }

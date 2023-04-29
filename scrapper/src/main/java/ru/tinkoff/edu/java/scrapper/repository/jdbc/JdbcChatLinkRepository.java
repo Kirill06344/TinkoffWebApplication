@@ -11,7 +11,6 @@ import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 @RequiredArgsConstructor
 public class JdbcChatLinkRepository implements ChatLinkRepository {
 
