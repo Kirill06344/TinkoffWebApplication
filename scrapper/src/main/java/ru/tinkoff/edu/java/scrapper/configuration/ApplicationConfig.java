@@ -10,7 +10,10 @@ import java.time.Duration;
 
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
-public record ApplicationConfig(@NotNull String test, Scheduler scheduler, AccessType databaseAccessType) {
+public record ApplicationConfig(@NotNull String test,
+                                Scheduler scheduler,
+                                AccessType databaseAccessType,
+                                RabbitData rabbitData) {
     public record Scheduler(Duration interval) {}
 
     public enum AccessType {
@@ -18,4 +21,6 @@ public record ApplicationConfig(@NotNull String test, Scheduler scheduler, Acces
         JPA,
         JOOQ
     }
+
+    public record RabbitData(String username, String password, String exchange, String queue, String root){}
 }
