@@ -11,6 +11,7 @@ import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
 import ru.tinkoff.edu.java.scrapper.scheduler.JdbcLinkUpdater;
 import ru.tinkoff.edu.java.scrapper.scheduler.LinkUpdater;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.services.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.services.jdbc.JdbcTgChatService;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
@@ -60,9 +61,9 @@ public class JooqAccessConfiguration {
             JooqLinkRepository linkRepository,
             JooqChatLinkRepository chatLinkRepository,
             LinkManager manager,
-            BotClient botClient
+            UpdateSender sender
     ) {
-        return new JdbcLinkUpdater(linkRepository, chatLinkRepository, manager, botClient);
+        return new JdbcLinkUpdater(linkRepository, chatLinkRepository, manager, sender);
     }
 
 }

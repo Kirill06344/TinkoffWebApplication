@@ -11,6 +11,7 @@ import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jdbc.JdbcLinkRepository;
 import ru.tinkoff.edu.java.scrapper.scheduler.JdbcLinkUpdater;
 import ru.tinkoff.edu.java.scrapper.scheduler.LinkUpdater;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.services.jdbc.JdbcLinkService;
 import ru.tinkoff.edu.java.scrapper.services.jdbc.JdbcTgChatService;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
@@ -44,9 +45,9 @@ public class JdbcAccessConfiguration {
             JdbcLinkRepository linkRepository,
             JdbcChatLinkRepository chatLinkRepository,
             LinkManager manager,
-            BotClient botClient
+            UpdateSender sender
     ) {
-        return new JdbcLinkUpdater(linkRepository, chatLinkRepository, manager, botClient);
+        return new JdbcLinkUpdater(linkRepository, chatLinkRepository, manager, sender);
     }
 
     @Bean

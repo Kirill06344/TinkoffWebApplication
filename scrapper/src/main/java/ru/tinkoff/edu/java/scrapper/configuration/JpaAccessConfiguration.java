@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.scheduler.JpaLinkUpdater;
 import ru.tinkoff.edu.java.scrapper.scheduler.LinkUpdater;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.services.*;
 import ru.tinkoff.edu.java.scrapper.services.jpa.JpaLinkService;
 import ru.tinkoff.edu.java.scrapper.services.jpa.JpaTgChatService;
@@ -36,8 +37,8 @@ public class JpaAccessConfiguration {
     public LinkUpdater linkUpdater(
             JpaLinkRepository linkRepository,
             LinkManager manager,
-            BotClient botClient
+            UpdateSender sender
     ) {
-        return new JpaLinkUpdater(linkRepository,manager, botClient);
+        return new JpaLinkUpdater(linkRepository,manager, sender);
     }
 }

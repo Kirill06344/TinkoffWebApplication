@@ -17,6 +17,7 @@ import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
@@ -37,7 +38,7 @@ public class JpaLinkUpdater implements LinkUpdater{
 
     private final LinkManager manager;
 
-    private final BotClient botClient;
+    private final UpdateSender sender;
 
     @Override
     public int update() {
@@ -70,7 +71,7 @@ public class JpaLinkUpdater implements LinkUpdater{
         DataChangeState state = compareLinks(oldLink, newLink);
         if (state != DataChangeState.NOTHING) {
             log.info("Send notification about update...");
-            botClient.sendUpdate(buildRequest(newLink, isGit
+            sender.send(buildRequest(newLink, isGit
                     ? ServiceResponses.getGithubResponse(state.toString())
                     : ServiceResponses.getStackOverflowResponses(state.toString())
             ));

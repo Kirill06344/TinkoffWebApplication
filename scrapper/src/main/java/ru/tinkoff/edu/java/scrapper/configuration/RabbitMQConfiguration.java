@@ -9,13 +9,18 @@ import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import ru.tinkoff.edu.java.scrapper.ScrapperQueueProducer;
+import ru.tinkoff.edu.java.scrapper.sender.RabbitUpdateSender;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 
 
 @Configuration
 @EnableRabbit
 @RequiredArgsConstructor
+@ConditionalOnProperty(prefix = "app", name = "useQueue", havingValue = "true")
 public class RabbitMQConfiguration {
 
     private final ApplicationConfig config;
@@ -57,6 +62,12 @@ public class RabbitMQConfiguration {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
         rabbitTemplate.setMessageConverter(jsonMessageConverter());
         return rabbitTemplate;
+    }
+
+
+    @Bean
+    UpdateSender sender(ScrapperQueueProducer producer) {
+        return new RabbitUpdateSender(producer);
     }
 
 }
