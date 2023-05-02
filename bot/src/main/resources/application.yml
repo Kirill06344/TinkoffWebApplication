@@ -1,5 +1,9 @@
 app:
   test: 12
+  rabbitData:
+    username: tinkoff
+    password: rabbit
+    queue: changeLink
 
 bot:
   token: ${telegram.api.token}

@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.sender;
 
 import lombok.RequiredArgsConstructor;
-import ru.tinkoff.edu.java.scrapper.ScrapperQueueProducer;
 import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 
 @RequiredArgsConstructor
