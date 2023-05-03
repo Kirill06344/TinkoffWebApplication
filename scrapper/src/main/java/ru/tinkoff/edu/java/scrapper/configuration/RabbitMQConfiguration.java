@@ -50,7 +50,9 @@ public class RabbitMQConfiguration {
 
     @Bean
     public Queue queue() {
-        return new Queue(config.rabbitData().queue());
+        return QueueBuilder.durable(config.rabbitData().queue())
+                .deadLetterExchange(config.rabbitData().queue() + ".dlx")
+                .build();
     }
 
     @Bean

@@ -49,4 +49,23 @@ public class RabbitMQConfiguration {
         return cachingConnectionFactory;
     }
 
+    @Bean
+    public AmqpAdmin amqpAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    Queue deadLetterQueue() {
+        return QueueBuilder.durable(config.rabbitData().queue() + ".dlq").build();
+    }
+    @Bean
+    FanoutExchange deadLetterExchange() {
+        return new FanoutExchange(config.rabbitData().queue() + ".dlx");
+    }
+
+    @Bean
+    Binding deadLetterBinding() {
+        return BindingBuilder.bind(deadLetterQueue()).to(deadLetterExchange());
+    }
+
 }

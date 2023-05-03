@@ -9,7 +9,7 @@ app:
     exchange: linkExchange
     queue:  changeLink
     root:   updateLink
-  useQueue: false
+  useQueue: true
 
 springdoc:
   swagger-ui:
