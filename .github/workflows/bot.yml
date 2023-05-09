@@ -1,4 +1,4 @@
-name: Tinkoff Application CI with Maven
+name: Tinkoff Application Bot CI with Maven
 
 on:
   push:
