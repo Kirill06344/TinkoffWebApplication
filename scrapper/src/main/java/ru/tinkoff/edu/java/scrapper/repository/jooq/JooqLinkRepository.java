@@ -3,9 +3,6 @@ package ru.tinkoff.edu.java.scrapper.repository.jooq;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.jooq.Result;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.records.LinkRecord;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
@@ -18,7 +15,6 @@ import java.util.Optional;
 
 import static org.jooq.impl.DSL.*;
 import static ru.tinkoff.edu.java.scrapper.domain.jooq.Tables.LINK;
-
 
 @Slf4j
 public class JooqLinkRepository implements LinkRepository {
@@ -49,8 +45,8 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public List<Link> findAllOldLinks() {
         Result<LinkRecord> result = context.selectFrom(LINK)
-                .where(minute(currentLocalDateTime().minus(LINK.CHECKED_AT)).ge(1))
-                .fetch();
+            .where(minute(currentLocalDateTime().minus(LINK.CHECKED_AT)).ge(1))
+            .fetch();
         return convertResultToList(result);
     }
 
@@ -62,16 +58,16 @@ public class JooqLinkRepository implements LinkRepository {
     @Override
     public DataChangeState updateOtherData(long id, LocalDateTime updatedAt, long count) {
         var link = findLinkById(id);
-        if (link.isEmpty()){
+        if (link.isEmpty()) {
             return DataChangeState.NOTHING;
         }
 
         LinkRecord newData = context.update(LINK)
-                .set(LINK.UPDATED_AT, updatedAt)
-                .set(LINK.INTR_COUNT, count)
-                .where(LINK.ID.eq(id))
-                .returning(LINK.ID, LINK.URL, LINK.CHECKED_AT, LINK.UPDATED_AT, LINK.INTR_COUNT)
-                .fetchOne();
+            .set(LINK.UPDATED_AT, updatedAt)
+            .set(LINK.INTR_COUNT, count)
+            .where(LINK.ID.eq(id))
+            .returning(LINK.ID, LINK.URL, LINK.CHECKED_AT, LINK.UPDATED_AT, LINK.INTR_COUNT)
+            .fetchOne();
 
         LocalDateTime prevDate = link.get().getUpdatedAt();
         LocalDateTime nextDate = newData.getUpdatedAt();
@@ -96,10 +92,10 @@ public class JooqLinkRepository implements LinkRepository {
         }
 
         LinkRecord link = context.insertInto(LINK, LINK.URL, LINK.CHECKED_AT, LINK.UPDATED_AT, LINK.INTR_COUNT)
-                .values(entity.getUrl(), entity.getCheckedAt(), entity.getUpdatedAt(), entity.getIntersectingCountField())
-                .onDuplicateKeyIgnore()
-                .returning(LINK.ID, LINK.URL, LINK.CHECKED_AT, LINK.UPDATED_AT, LINK.INTR_COUNT)
-                .fetchOne();
+            .values(entity.getUrl(), entity.getCheckedAt(), entity.getUpdatedAt(), entity.getIntersectingCountField())
+            .onDuplicateKeyIgnore()
+            .returning(LINK.ID, LINK.URL, LINK.CHECKED_AT, LINK.UPDATED_AT, LINK.INTR_COUNT)
+            .fetchOne();
 
         return (link != null) ? Optional.of(convertLinkRecordToLink(link)) : findLinkByUrl(entity.getUrl());
     }
@@ -117,10 +113,10 @@ public class JooqLinkRepository implements LinkRepository {
 
     private Link convertLinkRecordToLink(LinkRecord record) {
         return new Link().setId(record.getId())
-                .setUrl(record.getUrl())
-                .setUpdatedAt(record.getUpdatedAt())
-                .setIntersectingCountField(record.getIntrCount())
-                .setCheckedAt(record.getCheckedAt());
+            .setUrl(record.getUrl())
+            .setUpdatedAt(record.getUpdatedAt())
+            .setIntersectingCountField(record.getIntrCount())
+            .setCheckedAt(record.getCheckedAt());
     }
 
     private List<Link> convertResultToList(Result<LinkRecord> result) {

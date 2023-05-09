@@ -13,8 +13,10 @@ public class HttpInterfaceClientConfiguration {
 
     private final StackOverflowProperties stackOverflowProperties;
 
-    public HttpInterfaceClientConfiguration(GitHubProperties gitHubProperties,
-                                            StackOverflowProperties stackOverflowProperties) {
+    public HttpInterfaceClientConfiguration(
+        GitHubProperties gitHubProperties,
+        StackOverflowProperties stackOverflowProperties
+    ) {
         this.gitHubProperties = gitHubProperties;
         this.stackOverflowProperties = stackOverflowProperties;
     }

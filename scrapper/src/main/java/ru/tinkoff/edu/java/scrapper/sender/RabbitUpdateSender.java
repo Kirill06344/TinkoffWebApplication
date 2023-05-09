@@ -7,6 +7,7 @@ import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 public class RabbitUpdateSender implements UpdateSender {
 
     private final ScrapperQueueProducer producer;
+
     @Override
     public void send(LinkUpdateRequest request) {
         producer.send(request);

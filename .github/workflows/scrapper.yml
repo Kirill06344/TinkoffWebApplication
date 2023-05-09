@@ -13,6 +13,19 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  checkstyle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Check codestyle
+        run: mvn -pl scrapper -am checkstyle:check
+
   build:
     runs-on: ubuntu-latest
 
@@ -54,7 +67,7 @@ jobs:
         with:
           images: |
             ${{ secrets.DOCKERHUB_USERNAME }}/scrapper-app
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}    
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2

@@ -2,37 +2,28 @@ package ru.tinkoff.edu.java.scrapper.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
 import ru.tinkoff.edu.java.parser.url.results.GitHubResult;
 import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
-import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
-import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 import ru.tinkoff.edu.java.scrapper.utils.ServiceResponses;
-
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @Slf4j
-public class JpaLinkUpdater implements LinkUpdater{
+public class JpaLinkUpdater implements LinkUpdater {
 
     private final JpaLinkRepository linkRepository;
 
@@ -52,14 +43,13 @@ public class JpaLinkUpdater implements LinkUpdater{
                 sendIfItUpdated(link, response.pushedAt(), response.openIssues(), true);
             } else {
                 StackOverflowResponse response = manager
-                        .getStackOverflowQuestionInformation((StackOverflowResult) result).get();
+                    .getStackOverflowQuestionInformation((StackOverflowResult) result).get();
                 sendIfItUpdated(link, response.lastActivityDate(), response.answerCount(), false);
             }
             linkRepository.save(link.setCheckedAt(LocalDateTime.now()));
         }
         return oldLinks.size();
     }
-
 
     //Добавить исключение вместо InvalidLink
     private void sendIfItUpdated(Link link, OffsetDateTime date, long count, boolean isGit) {
@@ -72,18 +62,18 @@ public class JpaLinkUpdater implements LinkUpdater{
         if (state != DataChangeState.NOTHING) {
             log.info("Send notification about update...");
             sender.send(buildRequest(newLink, isGit
-                    ? ServiceResponses.getGithubResponse(state.toString())
-                    : ServiceResponses.getStackOverflowResponses(state.toString())
+                ? ServiceResponses.getGithubResponse(state.toString())
+                : ServiceResponses.getStackOverflowResponses(state.toString())
             ));
         }
     }
 
     private LinkUpdateRequest buildRequest(Link link, String description) {
         return new LinkUpdateRequest(
-                link.getId(),
-                link.getUrl(),
-                description,
-                link.getChats().stream().map(Chat::getId).toList()
+            link.getId(),
+            link.getUrl(),
+            description,
+            link.getChats().stream().map(Chat::getId).toList()
         );
     }
 

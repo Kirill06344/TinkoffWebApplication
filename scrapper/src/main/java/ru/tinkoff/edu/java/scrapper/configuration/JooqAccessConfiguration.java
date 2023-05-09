@@ -5,7 +5,6 @@ import org.jooq.DSLContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jooq.JooqLinkRepository;
@@ -42,26 +41,26 @@ public class JooqAccessConfiguration {
 
     @Bean
     public LinkService linkService(
-            JooqLinkRepository linkRepository,
-            JooqChatLinkRepository chatLinkRepository,
-            LinkManager manager
+        JooqLinkRepository linkRepository,
+        JooqChatLinkRepository chatLinkRepository,
+        LinkManager manager
     ) {
         return new JdbcLinkService(linkRepository, chatLinkRepository, manager);
     }
 
     @Bean
     public TgChatService tgChatService(
-            JooqChatRepository tgChatRepository
+        JooqChatRepository tgChatRepository
     ) {
         return new JdbcTgChatService(tgChatRepository);
     }
 
     @Bean
     public LinkUpdater linkUpdater(
-            JooqLinkRepository linkRepository,
-            JooqChatLinkRepository chatLinkRepository,
-            LinkManager manager,
-            UpdateSender sender
+        JooqLinkRepository linkRepository,
+        JooqChatLinkRepository chatLinkRepository,
+        LinkManager manager,
+        UpdateSender sender
     ) {
         return new JdbcLinkUpdater(linkRepository, chatLinkRepository, manager, sender);
     }

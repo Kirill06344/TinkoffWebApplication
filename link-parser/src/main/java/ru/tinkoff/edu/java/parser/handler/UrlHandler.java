@@ -12,6 +12,7 @@ import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 public class UrlHandler {
 
     private final UrlParser parser;
+
     public UrlHandler() {
         parser = new UrlGitHubParser();
         parser.setNext(new UrlStackOverflowParser());

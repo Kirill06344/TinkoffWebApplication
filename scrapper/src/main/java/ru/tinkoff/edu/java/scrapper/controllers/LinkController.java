@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +18,6 @@ import jakarta.validation.Valid;
 import ru.tinkoff.edu.java.scrapper.services.LinkService;
 import ru.tinkoff.edu.java.scrapper.dto.*;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -37,13 +35,13 @@ public class LinkController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Получить все отслеживаемые ссылки",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Ссылки успешно получены"),
-                    @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
-                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE)
-                    )
-            }
+               responses = {
+                   @ApiResponse(responseCode = "200", description = "Ссылки успешно получены"),
+                   @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                                                   mediaType = MediaType.APPLICATION_JSON_VALUE)
+                   )
+               }
     )
     public ListLinksResponse getAllLinks(@RequestHeader(TG_HEADER) Long tgChatId) {
         log.info("Request form tgId:" + tgChatId);
@@ -53,16 +51,18 @@ public class LinkController {
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @Operation(summary = "Добавить отслеживание ссылки",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Ссылка успешно добавлена"),
-                    @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
-                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE)
-                    )
-            }
+               responses = {
+                   @ApiResponse(responseCode = "200", description = "Ссылка успешно добавлена"),
+                   @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                                                   mediaType = MediaType.APPLICATION_JSON_VALUE)
+                   )
+               }
     )
-    public LinkResponse addLink(@RequestHeader(TG_HEADER) Long tgChatId,
-                                                @Valid @RequestBody AddLinkRequest request) {
+    public LinkResponse addLink(
+        @RequestHeader(TG_HEADER) Long tgChatId,
+        @Valid @RequestBody AddLinkRequest request
+    ) {
         log.info("Request to add link with url: " + request.link());
         Link link = linkService.add(tgChatId, request);
         return new LinkResponse(link.getId(), link.getUrl());
@@ -70,20 +70,22 @@ public class LinkController {
 
     @DeleteMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @Operation(summary = "Убрать отслеживание ссылки",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Ссылка успешно убрана"),
-                    @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
-                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE)
-                    ),
-                    @ApiResponse(responseCode = "404", description = "Ссылка не найдена",
-                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE)
-                    )
-            }
+               responses = {
+                   @ApiResponse(responseCode = "200", description = "Ссылка успешно убрана"),
+                   @ApiResponse(responseCode = "400", description = "Некорректные параметры запроса",
+                                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                                                   mediaType = MediaType.APPLICATION_JSON_VALUE)
+                   ),
+                   @ApiResponse(responseCode = "404", description = "Ссылка не найдена",
+                                content = @Content(schema = @Schema(implementation = ApiErrorResponse.class),
+                                                   mediaType = MediaType.APPLICATION_JSON_VALUE)
+                   )
+               }
     )
-    public LinkResponse deleteLink(@RequestHeader(TG_HEADER) Long tgChatId,
-                                                   @Valid @RequestBody RemoveLinkRequest request) {
+    public LinkResponse deleteLink(
+        @RequestHeader(TG_HEADER) Long tgChatId,
+        @Valid @RequestBody RemoveLinkRequest request
+    ) {
         try {
             URI uri = new URI(request.link());
             var link = linkService.remove(tgChatId, uri);

@@ -8,6 +8,7 @@ import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 public class HttpUpdateSender implements UpdateSender {
 
     private final BotClient botClient;
+
     @Override
     public void send(LinkUpdateRequest request) {
         botClient.sendUpdate(request);

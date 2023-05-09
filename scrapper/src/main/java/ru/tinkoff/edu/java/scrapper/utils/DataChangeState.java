@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.utils;
 
-public enum DataChangeState
-{
+public enum DataChangeState {
     COUNT("count"),
     OTHER("other"),
     NOTHING("nothing");

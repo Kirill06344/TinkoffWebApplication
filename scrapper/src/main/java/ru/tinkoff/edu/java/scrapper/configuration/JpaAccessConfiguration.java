@@ -3,7 +3,6 @@ package ru.tinkoff.edu.java.scrapper.configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaChatRepository;
 import ru.tinkoff.edu.java.scrapper.repository.jpa.JpaLinkRepository;
 import ru.tinkoff.edu.java.scrapper.scheduler.JpaLinkUpdater;
@@ -19,26 +18,26 @@ import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
 public class JpaAccessConfiguration {
     @Bean
     public LinkService linkService(
-            JpaLinkRepository linkRepository,
-            JpaChatRepository chatRepository,
-            LinkManager manager
+        JpaLinkRepository linkRepository,
+        JpaChatRepository chatRepository,
+        LinkManager manager
     ) {
         return new JpaLinkService(linkRepository, chatRepository, manager);
     }
 
     @Bean
     public TgChatService tgChatService(
-            JpaChatRepository chatRepository
+        JpaChatRepository chatRepository
     ) {
         return new JpaTgChatService(chatRepository);
     }
 
     @Bean
     public LinkUpdater linkUpdater(
-            JpaLinkRepository linkRepository,
-            LinkManager manager,
-            UpdateSender sender
+        JpaLinkRepository linkRepository,
+        LinkManager manager,
+        UpdateSender sender
     ) {
-        return new JpaLinkUpdater(linkRepository,manager, sender);
+        return new JpaLinkUpdater(linkRepository, manager, sender);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.entity.Chat;
 import ru.tinkoff.edu.java.scrapper.repository.ChatRepository;
 import java.util.List;
@@ -23,7 +22,6 @@ public class JdbcChatRepository implements ChatRepository {
     private static final String SQL_FIND_ALL_CHATS = "select * from chat";
 
     private static final String SQL_DELETE_CHAT_BY_ID = "delete from chat where id = ?";
-
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Chat> chatMapper = (rs, rowNum) -> new Chat().setId(rs.getLong("id"));

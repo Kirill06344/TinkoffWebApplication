@@ -8,5 +8,6 @@ public interface Repository<T, U> {
     Optional<T> add(T entity);
 
     List<T> findAll();
+
     int deleteById(U id);
 }

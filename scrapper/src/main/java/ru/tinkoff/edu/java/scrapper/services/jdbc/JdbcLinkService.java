@@ -11,7 +11,6 @@ import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.exceptions.NotTrackedLink;
 import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +40,10 @@ public class JdbcLinkService implements LinkService {
     @Override
     public Link remove(long tgChatId, URI url) {
         var link = linkRepository.findLinkByUrl(url.toString());
-        int deletedRows = chatLinkRepository.deleteById(new ChatLink(tgChatId,
-                link.orElseThrow(() -> new InvalidLink(url.toString())).getId()));
+        int deletedRows = chatLinkRepository.deleteById(new ChatLink(
+            tgChatId,
+            link.orElseThrow(() -> new InvalidLink(url.toString())).getId()
+        ));
         if (deletedRows == 0) {
             throw new NotTrackedLink(url.toString());
         }

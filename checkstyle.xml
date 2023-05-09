@@ -124,12 +124,9 @@
         <!-- <module name="AbstractClassName"/> -->
         <module name="CatchParameterName"/>
         <module name="ClassTypeParameterName"/>
-        <module name="ConstantName"/>
-        <module name="IllegalIdentifierName"/>
         <module name="InterfaceTypeParameterName"/>
         <module name="LambdaParameterName"/>
         <module name="LocalVariableName"/>
-        <module name="MemberName"/>
         <module name="MethodName"/>
         <module name="MethodTypeParameterName"/>
         <module name="PackageName"/>
@@ -275,10 +272,6 @@
         <!-- <module name="MissingCtor"/> -->
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
-        <module name="MultipleStringLiterals">
-            <!-- Allow zero-length and 1-character strings -->
-            <property name="ignoreStringsRegexp" value='^(("")|(".")|("..")|("..>"))$'/>
-        </module>
         <module name="MultipleVariableDeclarations"/>
         <module name="NestedForDepth">
             <property name="max" value="2"/>
@@ -321,13 +314,11 @@
             <message key="final.class"
                      value="Private ctor in non-final class. Inspect the code and make sure it's intended."/>
         </module>
-        <module name="HideUtilityClassConstructor"/>
         <module name="SuppressionXpathSingleFilter">
             <property name="checks" value="HideUtilityClassConstructor"/>
             <property name="query"
                       value="//*[MODIFIERS//*[@text = 'UtilityClass' or @text='NoArgsConstructor' or @text = 'SpringBootApplication']]/descendant-or-self::node()"/>
         </module>
-        <module name="InnerTypeLast"/>
         <!--<module name="InterfaceIsType"/>-->
         <module name="MutableException"/>
         <module name="OneTopLevelClass"/>
