@@ -30,7 +30,7 @@ jobs:
           path: target/bot-1.0-SNAPSHOT.jar
 
       - name: Download atrifact
-      - uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v2
         with:
           name: app.jar
           path: target/bot-1.0-SNAPSHOT.jar
