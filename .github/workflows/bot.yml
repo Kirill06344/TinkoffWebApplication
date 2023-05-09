@@ -24,7 +24,7 @@ jobs:
         run: mvn package -pl bot -am
 
       - name:  sasas
-        run: ls
+        run: ls ./bot/target
 
       - name: Temporarily save jar artifact
         uses: actions/upload-artifact@v2
