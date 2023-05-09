@@ -23,7 +23,7 @@ jobs:
       - name: Build project with Maven
         run: mvn package -pl scrapper -am
       - name: See jar file
-        run: ls -la bot/target
+        run: ls -la scrapper/target
 
       - name: Temporarily save jar artifact
         uses: actions/upload-artifact@v2
