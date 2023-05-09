@@ -1,6 +1,6 @@
 FROM openjdk:17.0.1-jdk-slim
 
-ARG JAR_FILE=target/bot-1.0-SNAPSHOT.jar
+ARG JAR_FILE=target/*.jar
 
 WORKDIR /opt/app
 
