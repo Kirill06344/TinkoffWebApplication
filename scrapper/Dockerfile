@@ -4,6 +4,6 @@ ARG JAR_FILE=target/*.jar
 
 WORKDIR /opt/app
 
-COPY ${JAR_FILE} bot.jar
+COPY ${JAR_FILE} scrapper.jar
 
-ENTRYPOINT ["java","-jar","bot.jar"]
+ENTRYPOINT ["java","-jar","scrapper.jar"]
