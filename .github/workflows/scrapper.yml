@@ -6,7 +6,7 @@ on:
       - './bot'
     branches: ["main", "hw9"]
   pull_request:
-    branches: ["main", "hw9"]
+    branches: ["main"]
 
 jobs:
   build:
