@@ -29,11 +29,13 @@ jobs:
           name: app.jar
           path: target/bot-1.0-SNAPSHOT.jar
 
-      - name: see jar file
+      - name: Download atrifact
       - uses: actions/download-artifact@v2
         with:
           name: app.jar
           path: target/bot-1.0-SNAPSHOT.jar
+
+      - name: See jar file
         run: ls -la target
 
       - name: Login to Docker Hub
