@@ -13,9 +13,14 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
+  checkstyle:
+    steps:
+      - name: Check codestyle
+        run: mvn -pl bot -am checkstyle:check
+
+
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
