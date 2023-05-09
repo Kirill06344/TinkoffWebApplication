@@ -10,16 +10,15 @@ import java.util.regex.Pattern;
 public class TrackingCommandValidator {
 
     public boolean supports(Update update, String command) {
-       String regex = command + " *";
+        String regex = command + " *";
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(update.message().text()).find();
     }
 
     public Optional<String> getLink(Update update) {
         String message = update.message().text();
-        String [] parts = message.trim().split(" ");
+        String[] parts = message.trim().split(" ");
         return parts.length == 2 ? Optional.of(parts[1]) : Optional.empty();
     }
-
 
 }

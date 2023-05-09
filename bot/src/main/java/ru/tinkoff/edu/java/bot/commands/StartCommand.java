@@ -12,7 +12,7 @@ import ru.tinkoff.edu.java.bot.utils.MessageSender;
 
 @SuperBuilder
 @Slf4j
-public class StartCommand extends AbstractCommand{
+public class StartCommand extends AbstractCommand {
 
     private ScrapperClient client;
 

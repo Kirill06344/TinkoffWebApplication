@@ -28,9 +28,11 @@ public class UntrackCommand extends AbstractCommand {
         var response = client.untrackLink(getChatId(update), link.get());
 
         if (response.isPresent()) {
-            return sender.send(getChatId(update),
-                    "responses/success_untracking.mustache",
-                    Map.of("link", response.get().link()));
+            return sender.send(
+                getChatId(update),
+                "responses/success_untracking.mustache",
+                Map.of("link", response.get().link())
+            );
         }
 
         return sender.send(getChatId(update), "responses/defects.mustache", Map.of());

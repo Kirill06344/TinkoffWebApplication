@@ -14,6 +14,7 @@ import ru.tinkoff.edu.java.bot.dto.LinkUpdateRequest;
 public class ScrapperQueueListener {
 
     private final UpdateSender updateSender;
+
     @RabbitHandler
     public void receiveUpdate(LinkUpdateRequest request) {
         log.info("Update from queue received!Send it to tg ids");

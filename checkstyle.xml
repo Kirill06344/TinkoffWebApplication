@@ -143,15 +143,10 @@
 
         <!-- https://checkstyle.org/config_imports.html -->
         <!--            Checks for imports              -->
-        <module name="AvoidStarImport"/>
         <!-- <module name="AvoidStaticImport"/> -->
         <!-- <module name="CustomImportOrder"/> -->
         <module name="IllegalImport"/> <!-- defaults to sun.* packages -->
         <!-- <module name="ImportControl"/> -->
-        <module name="ImportOrder">
-            <property name="option" value="under"/>
-            <property name="sortStaticImportsAlphabetically" value="true"/>
-        </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
 
@@ -277,12 +272,6 @@
         <!-- <module name="IllegalTokenText"/> -->
         <!-- <module name="IllegalType"/> -->
         <module name="InnerAssignment"/>
-        <module name="MagicNumber">
-            <property name="ignoreHashCodeMethod" value="true"/>
-            <property name="ignoreAnnotation" value="true"/>
-            <message key="magic.number"
-                     value="Most likely the value ''{0}'' is a configuration one. You should move it to configuration file instead of source code."/>
-        </module>
         <!-- <module name="MissingCtor"/> -->
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
@@ -388,11 +377,6 @@
             <property name="format" value="\.printStackTrace"/>
             <property name="ignoreComments" value="true"/>
             <property name="message" value="Using printStackTrace is a bad practice. Use a logger instead."/>
-        </module>
-        <module name="RegexpSinglelineJava">
-            <property name="format" value="System\.out\.print"/>
-            <property name="ignoreComments" value="true"/>
-            <property name="message" value="Using System.out for logging is a bad practice. Use a logger instead."/>
         </module>
         <module name="RegexpSinglelineJava">
             <property name="format"

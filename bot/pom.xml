@@ -36,7 +36,6 @@
         </dependency>
 
 
-
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
@@ -84,16 +83,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.puppycrawl.tools</groupId>
-            <artifactId>checkstyle</artifactId>
-            <version>10.10.0</version>
-        </dependency>
-
     </dependencies>
-
-
 
     <build>
         <plugins>
@@ -104,6 +94,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.2</version>
+                <configuration>
+                    <configLocation>../checkstyle.xml</configLocation>
+                </configuration>
             </plugin>
         </plugins>
     </build>

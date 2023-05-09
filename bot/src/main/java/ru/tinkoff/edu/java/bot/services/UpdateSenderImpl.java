@@ -23,8 +23,10 @@ public class UpdateSenderImpl implements UpdateSender {
         for (long id : request.tgChatIds()) {
             log.info(String.valueOf(id));
             bot.execute(sender.send(id, "responses/update_link.mustache",
-                    Map.of("msg", request.description(),
-                            "link", request.url())));
+                Map.of("msg", request.description(),
+                    "link", request.url()
+                )
+            ));
         }
     }
 }

@@ -2,7 +2,6 @@ package ru.tinkoff.edu.java.bot.utils;
 
 import java.util.Map;
 
-import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
 
 public interface MessageSender {

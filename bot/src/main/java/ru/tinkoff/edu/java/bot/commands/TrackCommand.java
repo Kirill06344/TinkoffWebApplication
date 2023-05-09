@@ -20,7 +20,6 @@ public class TrackCommand extends AbstractCommand {
 
     private TrackingCommandValidator validator;
 
-
     @Override
     public SendMessage handle(Update update) {
         Optional<String> link = validator.getLink(update);
@@ -31,9 +30,11 @@ public class TrackCommand extends AbstractCommand {
         var response = client.trackLink(getChatId(update), link.get());
 
         if (response.isPresent()) {
-            return sender.send(getChatId(update),
-                    "responses/success_tracking.mustache",
-                    Map.of("link", response.get().link()));
+            return sender.send(
+                getChatId(update),
+                "responses/success_tracking.mustache",
+                Map.of("link", response.get().link())
+            );
         }
 
         return sender.send(getChatId(update), "responses/defects.mustache", Map.of());

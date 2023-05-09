@@ -8,10 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import ru.tinkoff.edu.java.bot.messages.UserMessageProcessorImpl;
 import java.util.List;
 
-
 @Slf4j
 @RequiredArgsConstructor
-public class UpdateHandler implements UpdatesListener{
+public class UpdateHandler implements UpdatesListener {
 
     private final TelegramBot bot;
 
@@ -19,10 +18,10 @@ public class UpdateHandler implements UpdatesListener{
 
     @Override
     public int process(List<Update> list) {
-       for (Update update : list) {
-          bot.execute(messageProcessor.process(update));
-       }
-       return CONFIRMED_UPDATES_ALL;
+        for (Update update : list) {
+            bot.execute(messageProcessor.process(update));
+        }
+        return CONFIRMED_UPDATES_ALL;
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import ru.tinkoff.edu.java.bot.utils.UpdateHandler;
 import ru.tinkoff.edu.java.bot.messages.UserMessageProcessorImpl;
 
-
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +26,5 @@ public class TelegramBotConfiguration {
         bot.execute(new SetMyCommands(messageProcessor.botCommands()));
         return bot;
     }
-
 
 }
