@@ -15,7 +15,7 @@ public class LinkUpdaterScheduler {
 
     @Scheduled(fixedRateString = "${app.scheduler.interval}")
     public void update() {
-      updater.update();
+        updater.update();
     }
 
 }

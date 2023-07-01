@@ -21,51 +21,51 @@ public class CommandConfiguration {
     @Bean
     StartCommand startCommand() {
         return StartCommand.builder()
-                .command("/start")
-                .description("Register your id at the system to tracking")
-                .client(client)
-                .sender(sender)
-                .build();
+            .command("/start")
+            .description("Register your id at the system to tracking")
+            .client(client)
+            .sender(sender)
+            .build();
     }
 
     @Bean
     ListCommand listCommand() {
         return ListCommand.builder()
-                .command("/list")
-                .description("Show all tracked links")
-                .sender(sender)
-                .client(client)
-                .build();
+            .command("/list")
+            .description("Show all tracked links")
+            .sender(sender)
+            .client(client)
+            .build();
     }
 
     @Bean
     HelpCommand helpCommand() {
         return HelpCommand.builder()
-                .command("/help")
-                .description("Show all available commands")
-                .sender(sender)
-                .build();
+            .command("/help")
+            .description("Show all available commands")
+            .sender(sender)
+            .build();
     }
 
     @Bean
     TrackCommand trackCommand() {
         return TrackCommand.builder()
-                .command("/track")
-                .description("Start tracking link")
-                .sender(sender)
-                .client(client)
-                .validator(validator)
-                .build();
+            .command("/track")
+            .description("Start tracking link")
+            .sender(sender)
+            .client(client)
+            .validator(validator)
+            .build();
     }
 
     @Bean
     UntrackCommand untrackCommand() {
         return UntrackCommand.builder().command("/untrack")
-                .description("Stop tracking link")
-                .sender(sender)
-                .client(client)
-                .validator(validator)
-                .build();
+            .description("Stop tracking link")
+            .sender(sender)
+            .client(client)
+            .validator(validator)
+            .build();
     }
 
 }

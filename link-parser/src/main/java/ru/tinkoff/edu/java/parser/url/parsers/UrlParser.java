@@ -7,8 +7,12 @@ import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 
 public interface UrlParser {
     Optional<UrlResult> parse(URL url);
+
     Optional<UrlResult> check(URL url);
+
     boolean isInvalidHostName(URL url, String host);
+
     Optional<UrlResult> nextOrEmpty(URL url);
+
     UrlParser setNext(UrlParser parser);
 }

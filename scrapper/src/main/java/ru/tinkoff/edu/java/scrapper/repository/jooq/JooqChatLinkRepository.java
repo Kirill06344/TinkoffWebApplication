@@ -3,12 +3,9 @@ package ru.tinkoff.edu.java.scrapper.repository.jooq;
 import org.jooq.DSLContext;
 import org.jooq.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.domain.jooq.tables.records.ChatLinkRecord;
 import ru.tinkoff.edu.java.scrapper.entity.ChatLink;
 import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +44,11 @@ public class JooqChatLinkRepository implements ChatLinkRepository {
     @Override
     public Optional<ChatLink> findChatLink(ChatLink entity) {
         ChatLinkRecord chatLink = context.selectFrom(CHAT_LINK)
-                .where(CHAT_LINK.LINK_ID.eq(entity.getLinkId()))
-                .and(CHAT_LINK.CHAT_ID.eq(entity.getChatId()))
-                .fetchOne();
-        return (chatLink != null) ? Optional.of(new ChatLink(chatLink.getChatId(), chatLink.getLinkId())) : Optional.empty();
+            .where(CHAT_LINK.LINK_ID.eq(entity.getLinkId()))
+            .and(CHAT_LINK.CHAT_ID.eq(entity.getChatId()))
+            .fetchOne();
+        return (chatLink != null) ? Optional.of(new ChatLink(chatLink.getChatId(), chatLink.getLinkId()))
+            : Optional.empty();
     }
 
     @Override
@@ -70,12 +68,13 @@ public class JooqChatLinkRepository implements ChatLinkRepository {
         }
 
         ChatLinkRecord record = context.insertInto(CHAT_LINK, CHAT_LINK.CHAT_ID, CHAT_LINK.LINK_ID)
-                .values(entity.getChatId(), entity.getLinkId())
-                .onDuplicateKeyIgnore()
-                .returning(CHAT_LINK.CHAT_ID, CHAT_LINK.LINK_ID)
-                .fetchOne();
+            .values(entity.getChatId(), entity.getLinkId())
+            .onDuplicateKeyIgnore()
+            .returning(CHAT_LINK.CHAT_ID, CHAT_LINK.LINK_ID)
+            .fetchOne();
 
-        return (record != null) ? Optional.of(new ChatLink(record.getChatId(), record.getLinkId())) : findChatLink(entity);
+        return (record != null) ? Optional.of(new ChatLink(record.getChatId(), record.getLinkId()))
+            : findChatLink(entity);
     }
 
     @Override
@@ -91,8 +90,8 @@ public class JooqChatLinkRepository implements ChatLinkRepository {
     @Override
     public int deleteById(ChatLink id) {
         return context.deleteFrom(CHAT_LINK)
-                .where(CHAT_LINK.CHAT_ID.eq(id.getChatId()))
-                .and(CHAT_LINK.LINK_ID.eq(id.getLinkId()))
-                .execute();
+            .where(CHAT_LINK.CHAT_ID.eq(id.getChatId()))
+            .and(CHAT_LINK.LINK_ID.eq(id.getLinkId()))
+            .execute();
     }
 }

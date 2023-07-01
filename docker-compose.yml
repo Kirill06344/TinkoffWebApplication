@@ -31,6 +31,20 @@ services:
     networks:
       - backend
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      backend:
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq/
+      - ./rabbitmq/log/:/var/log/rabbitmq/
+    environment:
+      RABBITMQ_DEFAULT_USER: "tinkoff"
+      RABBITMQ_DEFAULT_PASS: "rabbit"
+
 networks:
   backend:
 

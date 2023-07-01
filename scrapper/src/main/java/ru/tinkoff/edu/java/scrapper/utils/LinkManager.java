@@ -12,7 +12,6 @@ import ru.tinkoff.edu.java.scrapper.entity.Link;
 import ru.tinkoff.edu.java.scrapper.exceptions.InvalidLink;
 import ru.tinkoff.edu.java.scrapper.services.GitHubService;
 import ru.tinkoff.edu.java.scrapper.services.StackOverflowService;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
@@ -75,9 +74,8 @@ public class LinkManager {
             count = data.get().answerCount();
         }
         return new Link().setUrl(link)
-                .setUpdatedAt(updatedAt)
-                .setIntersectingCountField(count);
+            .setUpdatedAt(updatedAt)
+            .setIntersectingCountField(count);
     }
-
 
 }

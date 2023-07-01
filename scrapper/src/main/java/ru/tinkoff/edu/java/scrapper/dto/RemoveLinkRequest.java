@@ -8,5 +8,5 @@ public record RemoveLinkRequest(
     @NotNull
     @URL
     String link
-)
-{}
+) {
+}

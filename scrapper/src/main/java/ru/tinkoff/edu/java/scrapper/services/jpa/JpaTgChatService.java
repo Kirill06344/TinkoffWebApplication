@@ -10,7 +10,6 @@ public class JpaTgChatService implements TgChatService {
 
     private final JpaChatRepository chatRepository;
 
-    @Override
     public void register(long tgChatId) {
         Chat chat = new Chat().setId(tgChatId);
         chatRepository.save(chat);

@@ -32,8 +32,8 @@ public class MessageSenderHTML implements MessageSender {
 
     @Override
     public SendMessage send(long id, String response, Map<String, Object> scopes) {
-        return new SendMessage(id, convertTemplate(response,scopes))
-                .disableWebPagePreview(true)
-                .parseMode(ParseMode.HTML);
+        return new SendMessage(id, convertTemplate(response, scopes))
+            .disableWebPagePreview(true)
+            .parseMode(ParseMode.HTML);
     }
 }

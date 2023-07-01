@@ -8,7 +8,6 @@ import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.entity.Link;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,16 +18,16 @@ import java.util.Optional;
 public class JdbcLinkRepository implements LinkRepository {
 
     private static final String SQL_ADD_LINK =
-            "insert into link(url, checked_at, updated_at, intr_count) values(?, ?, ?, ?) " +
-                    "on conflict do nothing returning id, url, checked_at, updated_at, intr_count";
+        "insert into link(url, checked_at, updated_at, intr_count) values(?, ?, ?, ?) "
+            + "on conflict do nothing returning id, url, checked_at, updated_at, intr_count";
 
     private static final String SQL_UPDATE_CHECKED_AT_TIME = "update link set checked_at = ? where id = ?";
 
-    private static final String SQL_UPDATE_DATA = "update link set updated_at = ?, intr_count = ? " +
-            "where id = ? returning id, url, checked_at, updated_at, intr_count";
+    private static final String SQL_UPDATE_DATA = "update link set updated_at = ?, intr_count = ? "
+        + "where id = ? returning id, url, checked_at, updated_at, intr_count";
 
-    private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where " +
-            "extract(epoch from ? - link.checked_at) / 60 > 1";
+    private static final String SQL_FIND_ALL_OLD_LINKS = "select * from link where "
+        + "extract(epoch from ? - link.checked_at) / 60 > 1";
 
     private static final String SQL_FIND_LINK_BY_URL = "select * from link where url = ?";
 
@@ -42,11 +41,11 @@ public class JdbcLinkRepository implements LinkRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final RowMapper<Link> linkMapper = (rs, rowNum) -> new Link()
-            .setId(rs.getLong("id"))
-            .setUrl(rs.getString("url"))
-            .setCheckedAt(rs.getObject("checked_at", LocalDateTime.class))
-            .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class))
-            .setIntersectingCountField(rs.getLong("intr_count"));
+        .setId(rs.getLong("id"))
+        .setUrl(rs.getString("url"))
+        .setCheckedAt(rs.getObject("checked_at", LocalDateTime.class))
+        .setUpdatedAt(rs.getObject("updated_at", LocalDateTime.class))
+        .setIntersectingCountField(rs.getLong("intr_count"));
 
     @Override
     public Optional<Link> add(Link entity) {
@@ -55,12 +54,13 @@ public class JdbcLinkRepository implements LinkRepository {
         }
 
         try {
-            var res = jdbcTemplate.queryForObject(SQL_ADD_LINK,
-                    linkMapper,
-                    entity.getUrl(),
-                    LocalDateTime.now(),
-                    entity.getUpdatedAt(),
-                    entity.getIntersectingCountField()
+            var res = jdbcTemplate.queryForObject(
+                SQL_ADD_LINK,
+                linkMapper,
+                entity.getUrl(),
+                LocalDateTime.now(),
+                entity.getUpdatedAt(),
+                entity.getIntersectingCountField()
             );
 
             return Optional.ofNullable(res);
@@ -117,7 +117,7 @@ public class JdbcLinkRepository implements LinkRepository {
     @Override
     public DataChangeState updateOtherData(long id, LocalDateTime updatedAt, long count) {
         var link = findLinkById(id);
-        if (link.isEmpty()){
+        if (link.isEmpty()) {
             return DataChangeState.NOTHING;
         }
         Link newData = jdbcTemplate.queryForObject(SQL_UPDATE_DATA, linkMapper, updatedAt, count, id);

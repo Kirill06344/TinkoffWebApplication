@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.edu.java.bot.commands.*;
 import ru.tinkoff.edu.java.bot.utils.MessageSender;
-import ru.tinkoff.edu.java.bot.utils.MessageSenderHTML;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,14 +33,14 @@ public class UserMessageProcessorImpl implements UserMessageProcessor {
 
     public BotCommand[] botCommands() {
         return commands().stream()
-                .map(Command::toApiCommand)
-                .toArray(BotCommand[]::new);
+            .map(Command::toApiCommand)
+            .toArray(BotCommand[]::new);
     }
 
     public Optional<? extends Command> getCommandFromUpdate(Update update) {
         return commands().stream()
-                .filter(c -> c.supports(update))
-                .findFirst();
+            .filter(c -> c.supports(update))
+            .findFirst();
     }
 
 }

@@ -7,10 +7,10 @@ import ru.tinkoff.edu.java.parser.url.results.StackOverflowResult;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.repository.ChatLinkRepository;
 import ru.tinkoff.edu.java.scrapper.repository.LinkRepository;
+import ru.tinkoff.edu.java.scrapper.sender.UpdateSender;
 import ru.tinkoff.edu.java.scrapper.utils.ConverterToDateTime;
 import ru.tinkoff.edu.java.scrapper.utils.DataChangeState;
 import ru.tinkoff.edu.java.scrapper.utils.LinkManager;
-import ru.tinkoff.edu.java.scrapper.clients.BotClient;
 import ru.tinkoff.edu.java.scrapper.dto.GitHubResponse;
 import ru.tinkoff.edu.java.scrapper.dto.LinkUpdateRequest;
 import ru.tinkoff.edu.java.scrapper.dto.StackOverflowResponse;
@@ -30,7 +30,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
 
     private final LinkManager manager;
 
-    private final BotClient botClient;
+    private final UpdateSender sender;
 
     @Override
     public int update() {
@@ -42,7 +42,7 @@ public class JdbcLinkUpdater implements LinkUpdater {
                 sendIfItUpdated(link, response.pushedAt(), response.openIssues(), true);
             } else {
                 StackOverflowResponse response = manager
-                        .getStackOverflowQuestionInformation((StackOverflowResult) result).get();
+                    .getStackOverflowQuestionInformation((StackOverflowResult) result).get();
                 sendIfItUpdated(link, response.lastActivityDate(), response.answerCount(), false);
             }
             linkRepository.updateCheckedAtTime(link.getId());
@@ -52,8 +52,8 @@ public class JdbcLinkUpdater implements LinkUpdater {
 
     private LinkUpdateRequest buildRequest(Link link, String description) {
         List<Long> ids = chatLinkRepository.findAllChatLinksByLinkId(link.getId()).stream()
-                .map(ChatLink::getChatId)
-                .toList();
+            .map(ChatLink::getChatId)
+            .toList();
 
         return new LinkUpdateRequest(link.getId(), link.getUrl(), description, ids);
     }
@@ -63,9 +63,9 @@ public class JdbcLinkUpdater implements LinkUpdater {
         if (state == DataChangeState.NOTHING) {
             return;
         }
-        botClient.sendUpdate(buildRequest(link, isGit
-                ? ServiceResponses.getGithubResponse(state.toString())
-                : ServiceResponses.getStackOverflowResponses(state.toString())
+        sender.send(buildRequest(link, isGit
+            ? ServiceResponses.getGithubResponse(state.toString())
+            : ServiceResponses.getStackOverflowResponses(state.toString())
         ));
     }
 }

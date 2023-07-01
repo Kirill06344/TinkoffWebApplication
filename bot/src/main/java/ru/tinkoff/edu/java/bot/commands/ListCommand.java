@@ -16,7 +16,6 @@ public class ListCommand extends AbstractCommand {
 
     private ScrapperClient client;
 
-
     @Override
     public SendMessage handle(Update update) {
         var response = client.getAllLinks(getChatId(update));

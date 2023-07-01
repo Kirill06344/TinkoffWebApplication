@@ -10,9 +10,9 @@ public interface Command extends Message {
     String description();
 
     default boolean supports(Update update) {
-        return update != null &&
-                update.message() != null
-                && update.message().text().equals(command());
+        return update != null
+            && update.message() != null
+            && update.message().text().equals(command());
     }
 
     default BotCommand toApiCommand() {

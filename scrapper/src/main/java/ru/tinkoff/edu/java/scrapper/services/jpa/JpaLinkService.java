@@ -1,7 +1,6 @@
 package ru.tinkoff.edu.java.scrapper.services.jpa;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.edu.java.parser.url.results.UrlResult;
 import ru.tinkoff.edu.java.scrapper.dto.AddLinkRequest;
@@ -42,13 +41,13 @@ public class JpaLinkService implements LinkService {
     public Link remove(long tgChatId, URI url) {
         Link link = linkRepository.findByUrl(url.toString()).orElseThrow(() -> new NotTrackedLink(url.toString()));
         Chat chat = getChatById(tgChatId);
-        if(!link.getChats().remove(chat) || !chat.getLinks().remove(link)) {
+        if (!link.getChats().remove(chat) || !chat.getLinks().remove(link)) {
             throw new NotTrackedLink(link.getUrl());
         }
         return link;
     }
 
-    private Chat getChatById(long tgChatId){
+    private Chat getChatById(long tgChatId) {
         return chatRepository.findById(tgChatId).orElseThrow(() -> new NotExistingChat(tgChatId));
     }
 

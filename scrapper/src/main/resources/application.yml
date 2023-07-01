@@ -2,7 +2,14 @@ app:
   test: 14
   scheduler:
     interval: PT010S
-  database-access-type: jooq
+  database-access-type: jpa
+  rabbitData:
+    username: tinkoff
+    password: rabbit
+    exchange: linkExchange
+    queue:  changeLink
+    root:   updateLink
+  useQueue: true
 
 springdoc:
   swagger-ui:
